@@ -1,16 +1,17 @@
+import java.util.Scanner;
+
 public class Menu {
 
 	private DataController dataController;
 	private Scanner scanner;
 
 	public Menu() {
-		// TODO - implement Menu.Menu
-		throw new UnsupportedOperationException();
+      this.dataController = new DataController();
+		this.scanner = new Scanner(System.in);
 	}
 
-	public void displayMenu() {
-		// TODO - implement Menu.displayMenu
-		throw new UnsupportedOperationException();
+	public boolean displayMenu() {
+		return true;
 	}
 
 	public void displayStaffMenu() {

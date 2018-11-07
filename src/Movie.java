@@ -1,3 +1,6 @@
+import java.util.List;
+import java.time.LocalDateTime;
+
 public class Movie {
 
 	private String title;
@@ -6,9 +9,12 @@ public class Movie {
 	private List<String> actors;
 	private List<String> category;
 
-	public Movie() {
-		// TODO - implement Movie.Movie
-		throw new UnsupportedOperationException();
+	public Movie(String title, LocalDateTime year, int rating, List<String> actors, List<String> category) {
+		this.title = title;
+      this.year = year;
+      this.rating = rating;
+      this.actors = actors;
+      this.category = category;
 	}
 
 }

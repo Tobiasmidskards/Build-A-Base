@@ -1,5 +1,12 @@
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.io.*;
+
 public class DataController {
 
+   private Scanner fileScanner;
 	private List<String> filePaths;
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
@@ -7,33 +14,90 @@ public class DataController {
 	private boolean isLoggedIn;
 
 	public DataController() {
-		// TODO - implement DataController.DataController
-		throw new UnsupportedOperationException();
+		this.filePaths = new ArrayList<>();
+      this.searchResults = new ArrayList<>();
+      this.eventLogger = new EventLog();
+      this.staff = new StaffUser();
+      this.isLoggedIn = false;
+      
+      
+	}
+   
+   public void addTable(String tableName)
+      throws IOException
+   {
+      File table = new File(tableName);
+      if (!table.exists())
+      {
+         table.createNewFile();
+      }
+   }
+   
+   public void removeTable(String tableName)
+      throws IOException
+   {
+      if (isLoggedIn)
+      {
+         System.out.println("You must be logged in to perform this task.");
+      }
+      else
+      {
+         File table = new File(tableName);
+         if (table.exists())
+         {
+            table.delete();
+         }
+      }
+   }
+
+	/**
+	 * 
+	 * @param index
+	 */
+	public void addLine(int index, String updatedEntry, String tableName) {
+		
 	}
 
 	/**
 	 * 
 	 * @param index
 	 */
-	public void addEntry(int index) {
-		// TODO - implement DataController.addEntry
-		throw new UnsupportedOperationException();
+	public String readLine(int index, String tableName)
+      throws FileNotFoundException
+   {
+      String entry = "";
+		File table = new File(tableName);
+      
+      if (!table.canRead())
+      {
+         System.out.println("Cannot read from table: '" + tableName + "'");
+      }
+      else
+      {
+         fileScanner = new Scanner(table, "UTF-8");
+      
+         for (int i = 0; i < index; i++)
+         {
+            if (fileScanner.hasNextLine())
+            {
+               entry = fileScanner.nextLine();
+            }
+            else
+            {
+               System.out.println("Line does not exist. Lines read before stopping: " + i);
+               entry = "";
+            }
+         }
+      }
+      
+      return entry;
 	}
 
 	/**
 	 * 
 	 * @param index
 	 */
-	public String readEntry(int index) {
-		// TODO - implement DataController.readEntry
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param index
-	 */
-	public void updateEntry(int index) {
+	public void updateLine(int index, String updatedEntry, String tableName) {
 		// TODO - implement DataController.updateEntry
 		throw new UnsupportedOperationException();
 	}
@@ -42,7 +106,7 @@ public class DataController {
 	 * 
 	 * @param index
 	 */
-	public void removeEntry(int index) {
+	public void removeLine(int index) {
 		// TODO - implement DataController.removeEntry
 		throw new UnsupportedOperationException();
 	}

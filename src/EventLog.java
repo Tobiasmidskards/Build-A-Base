@@ -1,3 +1,7 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+
 public class EventLog {
 
 	private List<Event> eventList;
@@ -8,8 +12,7 @@ public class EventLog {
 	}
 
 	public List<Event> listAllEvents() {
-		// TODO - implement EventLog.listAllEvents
-		throw new UnsupportedOperationException();
+		return eventList;
 	}
 
 	/**
@@ -17,8 +20,17 @@ public class EventLog {
 	 * @param date
 	 */
 	public List<Event> listEvents(LocalDateTime date) {
-		// TODO - implement EventLog.listEvents
-		throw new UnsupportedOperationException();
+		List<Event> tempList = new ArrayList<>();
+      
+      for (Event e : eventList)
+      {
+         if (e.getDate() == date)
+         {
+            tempList.add(e);
+         }
+      }
+      
+      return tempList;
 	}
 
 	/**
@@ -35,8 +47,17 @@ public class EventLog {
 	 * @param userId
 	 */
 	public List<Event> listEvents(int userId) {
-		// TODO - implement EventLog.listEvents
-		throw new UnsupportedOperationException();
+		List<Event> tempList = new ArrayList<>();
+      
+      for (Event e : eventList)
+      {
+         if (e.getStaffId() == userId)
+         {
+            tempList.add(e);
+         }
+      }
+      
+      return tempList;
 	}
 
 	/**
@@ -44,8 +65,7 @@ public class EventLog {
 	 * @param event
 	 */
 	public void addEvent(Event event) {
-		// TODO - implement EventLog.addEvent
-		throw new UnsupportedOperationException();
+		eventList.add(event);
 	}
 
 	/**
@@ -53,8 +73,7 @@ public class EventLog {
 	 * @param event
 	 */
 	public void removeEvent(Event event) {
-		// TODO - implement EventLog.removeEvent
-		throw new UnsupportedOperationException();
+		eventList.remove(event);
 	}
 
 }
