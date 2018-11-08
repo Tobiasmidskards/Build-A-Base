@@ -6,23 +6,23 @@ import java.io.*;
 
 public class DataController {
 
-   private Scanner fileScanner;
+  private Scanner fileScanner;
 	private List<String> filePaths;
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
 	private StaffUser staff;
 	private boolean isLoggedIn;
 
-	public DataController() {
-	 	this.filePaths = new ArrayList<>();
+	public DataController() throws FileNotFoundException {
+	 	  this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
      	this.isLoggedIn = false;
 
-     	fileScanner.useDelimiter("\t");
+     	//fileScanner.useDelimiter("\t");
 	}
-   
+
    public void addTable(String tableName)
       throws IOException
    {
@@ -32,7 +32,7 @@ public class DataController {
          table.createNewFile();
       }
    }
-   
+
    public void removeTable(String tableName)
       throws IOException
    {
@@ -51,15 +51,15 @@ public class DataController {
    }
 
 	/**
-	 * 
+	 *
 	 * @param index
 	 */
 	public void addLine(String line, String tableName) {
-		
+
 	}
 
 	/**
-	 * 
+	 *
 	 * @param index
 	 */
 	public String readLine(int index, String tableName)
@@ -67,7 +67,7 @@ public class DataController {
    {
      	String entry = "";
 		File table = new File(tableName);
-      
+
     	if (!table.canRead())
     	{
     		System.out.println("Cannot read from table: '" + tableName + "'");
@@ -75,7 +75,7 @@ public class DataController {
     	else
     	{
     		fileScanner = new Scanner(table, "UTF-8");
-      
+
     		for (int i = 0; i < index; i++)
     		{
             	if (fileScanner.hasNextLine())
@@ -89,12 +89,12 @@ public class DataController {
             	}
         	}
     	}
-      
+
     	return entry;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param index
 	 */
 	public void updateLine(int index, String updatedEntry, String tableName) {
@@ -103,7 +103,7 @@ public class DataController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param index
 	 */
 	public void removeLine(int index) {
@@ -112,7 +112,7 @@ public class DataController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param author
 	 */
 	public List<Movie> showMovieList(String author) {
@@ -121,7 +121,7 @@ public class DataController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param date
 	 */
 	public List<Movie> showMovieList(LocalDateTime date) {
@@ -130,7 +130,7 @@ public class DataController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param username
 	 * @param password
 	 */

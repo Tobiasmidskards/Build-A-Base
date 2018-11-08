@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.*;
 
 public class Menu {
 
@@ -6,7 +7,7 @@ public class Menu {
 	private Scanner scanner;
 	private MenuState state;
 
-	public Menu() {
+	public Menu() throws FileNotFoundException{
     this.dataController = new DataController();
 		this.scanner = new Scanner(System.in);
 		state = MenuState.MAINMENU;
@@ -32,22 +33,22 @@ public class Menu {
 		System.out.println("1 : Login");
 		System.out.println("2 : Database lookup");
 
-		// while (scanner.hasNextInt())
-		// {
-		// 	int input = scanner.nextInt();
-		// 	if (input == 0)
-		// 	{
-		// 		return false;
-		// 	}
-		// 	else if (input == 1)
-		// 	{
-		// 		displayLoginMenu();
-		// 	}
-		// 	else if (intput == 2)
-		// 	{
-		// 		displayDatabaseLookupMenu();
-		// 	}
-		// }
+		while (scanner.hasNextInt())
+		{
+			int input = scanner.nextInt();
+			if (input == 0)
+			{
+				//return false;
+			}
+			else if (input == 1)
+			{
+				displayLoginMenu();
+			}
+			else if (input == 2)
+			{
+				displayDatabaseLookupMenu();
+			}
+		}
 
 		//return true;
 	}
