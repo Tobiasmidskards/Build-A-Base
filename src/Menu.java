@@ -48,6 +48,7 @@ public class Menu {
 				displayLoginMenu();
 				break;
 			case "2":
+				ui.clear();
 				displayDatabaseLookupMenu();
 				break;
 			case "3":
@@ -70,7 +71,8 @@ public class Menu {
 		String password = scanner.nextLine();
 
 		if (loginManager.login(username, password)) {
-			System.out.println("You have succesfully logged in!");
+			System.out.println("\nYou have succesfully logged in!");
+			promptEnterMessage();
 			state = MenuState.SEARCH;
 		} else {
 			ui.wrongLogin();
@@ -86,12 +88,38 @@ public class Menu {
 	}
 
 	public void displayDatabaseLookupMenu() {
-		ui.clear();
 		ui.printTop();
 		ui.printSearchMenu();
 		ui.printBot();
 		System.out.print("\n- ");
 		String input = scanner.nextLine();
+		switch(input) {
+			case "1":
+			  ui.clear();
+			  displayDatabaseLookupMenu();
+				break;
+			case "2":
+				ui.clear();
+        displayDatabaseLookupMenu();
+				break;
+			case "3":
+				state = MenuState.MAINMENU;
+				break;
+			default:
+				ui.clear();
+				System.out.println("Try again please.");
+				displayDatabaseLookupMenu();
+				break;
+		}
+	}
+
+	private void promptEnterMessage()
+	{
+		  ui.printBot();
+			System.out.print("\nEnter anything to continue..");
+			Scanner scanner = new Scanner(System.in);
+			scanner.nextLine();
+
 	}
 
 }
