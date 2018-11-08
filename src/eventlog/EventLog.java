@@ -1,3 +1,5 @@
+package eventlog;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -10,7 +12,7 @@ public class EventLog {
 	private Scanner input;
 	private PrintStream output;
 	private List<Event> eventList;
-	private String LOGFILE = "eventlog.txt";
+	private String LOGFILE = "eventlog/eventlog.txt";
 
 	public EventLog()
 		throws FileNotFoundException

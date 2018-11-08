@@ -1,3 +1,5 @@
+package menus;
+
 public enum MenuState{
   LOGIN,
   SEARCH,

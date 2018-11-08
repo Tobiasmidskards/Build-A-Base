@@ -1,5 +1,9 @@
+package menus;
+
 import java.util.Scanner;
 import java.io.*;
+import database.*;
+import datacontroller.*;
 
 public class Menu {
 
@@ -9,7 +13,7 @@ public class Menu {
 	private UI ui;
 
 	public Menu() throws FileNotFoundException{
-    	this.dataController = new DataController();
+    this.dataController = new DataController();
 		this.scanner = new Scanner(System.in);
 		this.state = MenuState.MAINMENU;
 		this.ui = new UI();

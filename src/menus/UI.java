@@ -1,3 +1,5 @@
+package menus;
+
 public class UI{
   public UI(){
 
@@ -13,7 +15,7 @@ public class UI{
   }
 
   public void printBot() {
-    System.out.print("\n░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ v. 1.0 ▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n");
+    System.out.print("\n░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ v. 1.0 ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n");
   }
 
   public void printMainMenu() {

@@ -1,3 +1,9 @@
+package datacontroller;
+
+import login.StaffUser;
+import eventlog.*;
+import database.*;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ public class DataController {
 	private StaffUser staff;
 
 	public DataController() throws FileNotFoundException {
-	 	this.filePaths = new ArrayList<>();
+	 	  this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
@@ -153,11 +159,11 @@ public class DataController {
 	public boolean login(String username, String password) {
 		try
 		{
-			File users = new File("login.txt");
+			File users = new File("datacontroller/login.txt");
 			if (users.canRead())
 			{
 				fileScanner = new Scanner(users);
-				
+
 				Scanner inputScanner;
 				String lineRead = "";
 
@@ -173,7 +179,7 @@ public class DataController {
 							int id = Integer.parseInt(userInfo[0]);
 							staff = new StaffUser(id, userInfo[1], userInfo[2], userInfo[3], userInfo[4], userInfo[5], userInfo[6]);
 
-							System.out.println("Succesfully logged in!");
+							System.out.println("\nSuccesfully logged in!");
 
 							return true;
 						}
@@ -184,7 +190,7 @@ public class DataController {
 					}
 				}
 
-				System.out.println("Login failed. Wrong username/password entered.");
+				System.out.println("\nLogin failed. Wrong username/password entered.");
 			}
 			else
 			{

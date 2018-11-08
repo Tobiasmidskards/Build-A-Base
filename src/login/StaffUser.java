@@ -1,3 +1,5 @@
+package login;
+
 public class StaffUser {
 
 	private int id;
@@ -28,7 +30,7 @@ public class StaffUser {
       this.password = password;
       this.staffTitle = staffTitle;
 	}
-   
+
    public int getId() {
       return this.id;
    }
