@@ -11,14 +11,12 @@ public class DataController {
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
 	private StaffUser staff;
-	private boolean isLoggedIn;
 
 	public DataController() throws FileNotFoundException {
 	 	this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
-     	this.isLoggedIn = false;
 	}
 
    public void addTable(String tableName)
@@ -61,6 +59,7 @@ public class DataController {
 		if (staff.getId() > 0)
 		{
 
+			eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATE, staff.getId()));
 		}
 		else
 		{
@@ -165,7 +164,7 @@ public class DataController {
 				while (fileScanner.hasNextLine())
 				{
 					lineRead = fileScanner.nextLine();
-					String[] userInfo = lineRead.split(" ");
+					String[] userInfo = lineRead.split("\t");
 
 					if (userInfo[4].equals(username) && userInfo[5].equals(password))
 					{

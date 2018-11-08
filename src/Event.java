@@ -9,7 +9,7 @@ public class Event {
 	private int staffId;
 
 	public Event(LocalDateTime date, String tableName, EventType eventType, int staffId) {
-		this.date = date;
+      this.date = date;
      	this.tableName = tableName;
      	this.eventType = eventType;
      	this.staffId = staffId;

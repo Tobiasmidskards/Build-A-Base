@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.io.*;
 import java.util.Scanner;
 
@@ -11,7 +12,9 @@ public class EventLog {
 	private List<Event> eventList;
 	private String LOGFILE = "eventlog.txt";
 
-	public EventLog() throws FileNotFoundException{
+	public EventLog()
+		throws FileNotFoundException
+	{
 		File logFile = new File(LOGFILE);
 
 		eventList = new ArrayList<>();
@@ -32,7 +35,7 @@ public class EventLog {
 
      	for (Event e : eventList)
      	{
-        	if (e.getDate() == date)
+        	if (e.getDate().truncatedTo(ChronoUnit.DAYS) == date)
         	{
            		tempList.add(e);
         	}
