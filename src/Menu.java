@@ -6,14 +6,13 @@ public class Menu {
 	private DataController dataController;
 	private Scanner scanner;
 	private MenuState state;
-	private LoginManager loginManager;
-	private UI ui = new UI();
+	private UI ui;
 
 	public Menu() throws FileNotFoundException{
-    this.dataController = new DataController();
+    	this.dataController = new DataController();
 		this.scanner = new Scanner(System.in);
-		loginManager = new LoginManager();
-		state = MenuState.MAINMENU;
+		this.state = MenuState.MAINMENU;
+		this.ui = new UI();
 	}
 
 	public boolean displayMenu() {
@@ -29,7 +28,7 @@ public class Menu {
 				displayDatabaseLookupMenu();;
 				break;
 			case EXIT:
-			  ui.clear();
+			  	ui.clear();
 				ui.exit();
 				return false;
 		}
@@ -52,10 +51,10 @@ public class Menu {
 				displayDatabaseLookupMenu();
 				break;
 			case "3":
-			  state = MenuState.EXIT;
+			 	state = MenuState.EXIT;
 				break;
 			default:
-			  ui.clear();
+			  	ui.clear();
 				System.out.println("Try again please.");
 				displayMainMenu();
 				break;
@@ -70,12 +69,12 @@ public class Menu {
 		System.out.print("Password: ");
 		String password = scanner.nextLine();
 
-		if (loginManager.login(username, password)) {
-			System.out.println("\nYou have succesfully logged in!");
+		if (dataController.login(username, password)) {
 			promptEnterMessage();
 			state = MenuState.SEARCH;
-		} else {
-			ui.wrongLogin();
+		}
+		else {
+			ui.failedLogin();
 			String input = scanner.nextLine();
 
 			if (input.equals("y")) {

@@ -35,8 +35,8 @@ public class UI{
     System.out.print("░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓    LOGIN     ▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n\n");
   }
 
-  public void wrongLogin() {
-    System.out.print("\nWrong username/password.\nDo you want to try again? (y/n)\n");
+  public void failedLogin() {
+    System.out.print("\nDo you want to try again? (y/n)\n");
     printBot();
     System.out.print("\n- ");
   }

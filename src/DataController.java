@@ -6,7 +6,7 @@ import java.io.*;
 
 public class DataController {
 
-  private Scanner fileScanner;
+	private Scanner fileScanner;
 	private List<String> filePaths;
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
@@ -14,40 +14,43 @@ public class DataController {
 	private boolean isLoggedIn;
 
 	public DataController() throws FileNotFoundException {
-	 	  this.filePaths = new ArrayList<>();
+	 	this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
      	this.isLoggedIn = false;
-
-     	//fileScanner.useDelimiter("\t");
 	}
 
    public void addTable(String tableName)
-      throws IOException
    {
-      File table = new File(tableName);
-      if (!table.exists())
-      {
-         table.createNewFile();
-      }
+   		try
+   		{
+   			File table = new File(tableName);
+      		if (!table.exists())
+      		{
+         		table.createNewFile();
+      		}
+   		}
+   		catch (IOException e)
+   		{
+   			System.out.println(e);
+   		}
    }
 
    public void removeTable(String tableName)
-      throws IOException
    {
-      if (!isLoggedIn)
-      {
-         System.out.println("You must be logged in to perform this task.");
-      }
-      else
-      {
-         File table = new File(tableName);
-         if (table.exists())
-         {
-            table.delete();
-         }
-      }
+   		if (staff.getId() > 0) // -1 means not logged in, a boolean would be redundant
+      	{
+      		File table = new File(tableName);
+         	if (table.exists())
+         	{
+            	table.delete();
+         	}
+      	}
+      	else
+      	{
+         	System.out.println("You must be logged in to perform this task.");
+      	}
    }
 
 	/**
@@ -55,7 +58,14 @@ public class DataController {
 	 * @param index
 	 */
 	public void addLine(String line, String tableName) {
+		if (staff.getId() > 0)
+		{
 
+		}
+		else
+		{
+			System.out.println("Login is required to perform this task.");
+		}
 	}
 
 	/**
@@ -63,31 +73,38 @@ public class DataController {
 	 * @param index
 	 */
 	public String readLine(int index, String tableName)
-      throws FileNotFoundException
-   {
-     	String entry = "";
-		File table = new File(tableName);
+	{
+		String entry = "";
 
-    	if (!table.canRead())
-    	{
-    		System.out.println("Cannot read from table: '" + tableName + "'");
-    	}
-    	else
-    	{
-    		fileScanner = new Scanner(table, "UTF-8");
+   		try
+   		{
+			File table = new File(tableName);
 
-    		for (int i = 0; i < index; i++)
+    		if (!table.canRead())
     		{
-            	if (fileScanner.hasNextLine())
-            	{
-               		entry = fileScanner.nextLine();
-            	}
-            	else
-            	{
-               		System.out.println("Line does not exist. Lines read before stopping: " + i);
-               		entry = "";
-            	}
-        	}
+    			System.out.println("Cannot read from table: '" + tableName + "'");
+    		}
+    		else
+    		{
+    			fileScanner = new Scanner(table, "UTF-8");
+
+    			for (int i = 0; i < index; i++)
+    			{
+            		if (fileScanner.hasNextLine())
+            		{
+               			entry = fileScanner.nextLine();
+            		}
+            		else
+            		{
+               			System.out.println("Line does not exist. Lines read before stopping: " + i);
+               			entry = "";
+            		}
+        		}
+    		}
+    	}
+    	catch (IOException e)
+    	{
+    		System.out.println(e);
     	}
 
     	return entry;
@@ -122,9 +139,9 @@ public class DataController {
 
 	/**
 	 *
-	 * @param date
+	 * @param year
 	 */
-	public List<Movie> showMovieList(LocalDateTime date) {
+	public List<Movie> showMovieList(LocalDateTime year) {
 		// TODO - implement DataController.showMovieList
 		throw new UnsupportedOperationException();
 	}
@@ -134,9 +151,57 @@ public class DataController {
 	 * @param username
 	 * @param password
 	 */
-	public void login(String username, String password) {
-		// TODO - implement DataController.login
-		throw new UnsupportedOperationException();
+	public boolean login(String username, String password) {
+		try
+		{
+			File users = new File("login.txt");
+			if (users.canRead())
+			{
+				fileScanner = new Scanner(users);
+				
+				Scanner inputScanner;
+				String lineRead = "";
+
+				while (fileScanner.hasNextLine())
+				{
+					lineRead = fileScanner.nextLine();
+					String[] userInfo = lineRead.split(" ");
+
+					if (userInfo[4].equals(username) && userInfo[5].equals(password))
+					{
+						try
+						{
+							int id = Integer.parseInt(userInfo[0]);
+							staff = new StaffUser(id, userInfo[1], userInfo[2], userInfo[3], userInfo[4], userInfo[5], userInfo[6]);
+
+							System.out.println("Succesfully logged in!");
+
+							return true;
+						}
+						catch (NumberFormatException e)
+						{
+							System.out.println("Login failed. File is corrupted.");
+						}
+					}
+				}
+
+				System.out.println("Login failed. Wrong username/password entered.");
+			}
+			else
+			{
+				System.out.println("Login failed. File cannot be read.");
+			}
+		}
+		catch (IOException e)
+		{
+			System.out.println(e);
+		}
+
+		return false;
+	}
+
+	public void logOut() {
+		staff = new StaffUser();
 	}
 
 }
