@@ -20,7 +20,7 @@ public class StaffUser {
    }
 
 	public StaffUser(int id, String firstName, String lastName, String email, String username, String password, String staffTitle) {
-		this.id = id;
+	  this.id = id;
       this.firstName = firstName;
       this.lastName = lastName;
       this.email = email;

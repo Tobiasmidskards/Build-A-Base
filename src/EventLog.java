@@ -1,14 +1,20 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.io.*;
 
 public class EventLog {
 
+	private Scanner input;
+	private PrintStream output;
 	private List<Event> eventList;
+	private String LOGFILE = "eventlog.txt";
 
 	public EventLog() {
-		// TODO - implement EventLog.EventLog
-		throw new UnsupportedOperationException();
+		File logFile = new File(LOGFILE);
+
+		eventList = new ArrayList<>();
+		output = new PrintStream(logFile);
 	}
 
 	public List<Event> listAllEvents() {
@@ -38,8 +44,17 @@ public class EventLog {
 	 * @param type
 	 */
 	public List<Event> listEvents(EventType type) {
-		// TODO - implement EventLog.listEvents
-		throw new UnsupportedOperationException();
+		List<Event> tempList = new ArrayList<>();
+      
+     	for (Event e : eventList)
+     	{
+        	if (e.EventType == type)
+        	{
+        		tempList.add(e);
+        	}
+     	}
+      
+    	return tempList;
 	}
 
 	/**
@@ -66,14 +81,8 @@ public class EventLog {
 	 */
 	public void addEvent(Event event) {
 		eventList.add(event);
-	}
 
-	/**
-	 * 
-	 * @param event
-	 */
-	public void removeEvent(Event event) {
-		eventList.remove(event);
+		output.println(event.toString());
 	}
 
 }

@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Event {
 
@@ -9,9 +10,9 @@ public class Event {
 
 	public Event(LocalDateTime date, String tableName, EventType eventType, int staffId) {
 		this.date = date;
-      this.tableName = tableName;
-      this.eventType = eventType;
-      this.staffId = staffId;
+     	this.tableName = tableName;
+     	this.eventType = eventType;
+     	this.staffId = staffId;
 	}
    
    public void setDate(LocalDateTime date)
@@ -52,5 +53,10 @@ public class Event {
    public int getStaffId()
    {
       return this.staffId;
+   }
+
+   public String toString()
+   {
+   	  return "Date: '" + date.truncatedTo(ChronoUnit.SECONDS) + "' Table: '" + tableName + "' EventType: '" + eventType + "' StaffId: '" + staffId + "'";
    }
 }

@@ -14,13 +14,13 @@ public class DataController {
 	private boolean isLoggedIn;
 
 	public DataController() {
-		this.filePaths = new ArrayList<>();
-      this.searchResults = new ArrayList<>();
-      this.eventLogger = new EventLog();
-      this.staff = new StaffUser();
-      this.isLoggedIn = false;
-      
-      
+	 	this.filePaths = new ArrayList<>();
+     	this.searchResults = new ArrayList<>();
+     	this.eventLogger = new EventLog();
+     	this.staff = new StaffUser();
+     	this.isLoggedIn = false;
+
+     	fileScanner.useDelimiter("\t");
 	}
    
    public void addTable(String tableName)
