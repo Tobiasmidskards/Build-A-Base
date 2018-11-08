@@ -6,10 +6,12 @@ public class Menu {
 	private DataController dataController;
 	private Scanner scanner;
 	private MenuState state;
+	private LoginManager loginManager;
 
 	public Menu() throws FileNotFoundException{
     this.dataController = new DataController();
 		this.scanner = new Scanner(System.in);
+		loginManager = new LoginManager();
 		state = MenuState.MAINMENU;
 	}
 
@@ -22,7 +24,7 @@ public class Menu {
 				displayLoginMenu();
 				break;
 			case SEARCH:
-				displayLoginMenu();
+				displayMainMenu();
 				break;
 		}
 	}
@@ -31,39 +33,40 @@ public class Menu {
 		System.out.println("*** Build A Base ***");
 		System.out.println("0 : Exit");
 		System.out.println("1 : Login");
-		System.out.println("2 : Database lookup");
+		System.out.println("2 : Search");
 
-		while (scanner.hasNextInt())
-		{
-			int input = scanner.nextInt();
-			if (input == 0)
-			{
-				//return false;
-			}
-			else if (input == 1)
-			{
+		System.out.print("\ninput: ");
+	  String input = scanner.nextLine();
+		switch(input) {
+			case "1":
 				displayLoginMenu();
-			}
-			else if (input == 2)
-			{
+				break;
+			case "2":
 				displayDatabaseLookupMenu();
-			}
+				break;
+			default:
+				System.out.println("Try again please.");
+				displayMainMenu();
+				break;
+
 		}
 
-		//return true;
 	}
 
 	public void displayLoginMenu() {
 		System.out.println("*** Build A Base ***");
+		System.out.println("*\tLogin\t*");
 		System.out.print("Username: ");
 	 	String username = scanner.nextLine();
 		System.out.print("Password: ");
 		String password = scanner.nextLine();
-		// if (login(username, password)) {
-		// 	state.SEARCH;
-		// } else {
-		// 	state.LOGIN;
-		// }
+		if (loginManager.login(username, password)) {
+			System.out.println("");
+			state = MenuState.SEARCH;
+		} else {
+			System.out.println("");
+			state = MenuState.LOGIN;
+		}
 
 	}
 
