@@ -4,10 +4,10 @@ public class BuildABase
    {
       Menu menu = new Menu();
       boolean runProgram = true;
-      
+
       while (runProgram)
       {
-         runProgram = menu.displayMenu();
+         menu.displayMenu();
       }
    }
 }

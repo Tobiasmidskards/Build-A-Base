@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.io.*;
+import java.util.Scanner;
 
 public class EventLog {
 
@@ -10,7 +11,7 @@ public class EventLog {
 	private List<Event> eventList;
 	private String LOGFILE = "eventlog.txt";
 
-	public EventLog() {
+	public EventLog() throws FileNotFoundException{
 		File logFile = new File(LOGFILE);
 
 		eventList = new ArrayList<>();
@@ -22,13 +23,13 @@ public class EventLog {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param date
 	 */
 	public List<Event> listEvents(LocalDateTime date)
 	{
 		List<Event> tempList = new ArrayList<>();
-      
+
      	for (Event e : eventList)
      	{
         	if (e.getDate() == date)
@@ -36,35 +37,35 @@ public class EventLog {
            		tempList.add(e);
         	}
      	}
-      
+
      	return tempList;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param type
 	 */
 	public List<Event> listEvents(EventType type) {
 		List<Event> tempList = new ArrayList<>();
-      
+
      	for (Event e : eventList)
      	{
-        	if (e.EventType == type)
+        	if (e.getEventType() == type)
         	{
         		tempList.add(e);
         	}
      	}
-      
+
     	return tempList;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param userId
 	 */
 	public List<Event> listEvents(int userId) {
 		List<Event> tempList = new ArrayList<>();
-      
+
       for (Event e : eventList)
       {
          if (e.getStaffId() == userId)
@@ -72,12 +73,12 @@ public class EventLog {
             tempList.add(e);
          }
       }
-      
+
       return tempList;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param event
 	 */
 	public void addEvent(Event event) {
