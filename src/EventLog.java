@@ -25,18 +25,19 @@ public class EventLog {
 	 * 
 	 * @param date
 	 */
-	public List<Event> listEvents(LocalDateTime date) {
+	public List<Event> listEvents(LocalDateTime date)
+	{
 		List<Event> tempList = new ArrayList<>();
       
-      for (Event e : eventList)
-      {
-         if (e.getDate() == date)
-         {
-            tempList.add(e);
-         }
-      }
+     	for (Event e : eventList)
+     	{
+        	if (e.getDate() == date)
+        	{
+           		tempList.add(e);
+        	}
+     	}
       
-      return tempList;
+     	return tempList;
 	}
 
 	/**

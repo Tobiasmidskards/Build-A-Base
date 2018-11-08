@@ -36,7 +36,7 @@ public class DataController {
    public void removeTable(String tableName)
       throws IOException
    {
-      if (isLoggedIn)
+      if (!isLoggedIn)
       {
          System.out.println("You must be logged in to perform this task.");
       }
@@ -54,7 +54,7 @@ public class DataController {
 	 * 
 	 * @param index
 	 */
-	public void addLine(int index, String updatedEntry, String tableName) {
+	public void addLine(String line, String tableName) {
 		
 	}
 
@@ -65,32 +65,32 @@ public class DataController {
 	public String readLine(int index, String tableName)
       throws FileNotFoundException
    {
-      String entry = "";
+     	String entry = "";
 		File table = new File(tableName);
       
-      if (!table.canRead())
-      {
-         System.out.println("Cannot read from table: '" + tableName + "'");
-      }
-      else
-      {
-         fileScanner = new Scanner(table, "UTF-8");
+    	if (!table.canRead())
+    	{
+    		System.out.println("Cannot read from table: '" + tableName + "'");
+    	}
+    	else
+    	{
+    		fileScanner = new Scanner(table, "UTF-8");
       
-         for (int i = 0; i < index; i++)
-         {
-            if (fileScanner.hasNextLine())
-            {
-               entry = fileScanner.nextLine();
-            }
-            else
-            {
-               System.out.println("Line does not exist. Lines read before stopping: " + i);
-               entry = "";
-            }
-         }
-      }
+    		for (int i = 0; i < index; i++)
+    		{
+            	if (fileScanner.hasNextLine())
+            	{
+               		entry = fileScanner.nextLine();
+            	}
+            	else
+            	{
+               		System.out.println("Line does not exist. Lines read before stopping: " + i);
+               		entry = "";
+            	}
+        	}
+    	}
       
-      return entry;
+    	return entry;
 	}
 
 	/**

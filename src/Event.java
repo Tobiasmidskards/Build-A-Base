@@ -17,46 +17,46 @@ public class Event {
    
    public void setDate(LocalDateTime date)
    {
-      this.date = date;
+     	this.date = date;
    }
    
    public LocalDateTime getDate()
    {
-      return this.date;
+     	return this.date;
    }
    
    public void setTableName(String tableName)
    {
-      this.tableName = tableName;
+     	this.tableName = tableName;
    }
    
    public String getTableName()
    {
-      return this.tableName;
+     	return this.tableName;
    }
    
    public void setEventType(EventType eventType)
    {
-      this.eventType = eventType;
+     	this.eventType = eventType;
    }
    
    public EventType getEventType()
    {
-      return this.eventType;
+     	return this.eventType;
    }
    
    public void setStaffId(int staffId)
    {
-      this.staffId = staffId;
+     	this.staffId = staffId;
    }
    
    public int getStaffId()
    {
-      return this.staffId;
+     	return this.staffId;
    }
 
    public String toString()
    {
-   	  return "Date: '" + date.truncatedTo(ChronoUnit.SECONDS) + "' Table: '" + tableName + "' EventType: '" + eventType + "' StaffId: '" + staffId + "'";
+   	 	return "Date: '" + date.truncatedTo(ChronoUnit.SECONDS) + "' Table: '" + tableName + "' EventType: '" + eventType + "' StaffId: '" + staffId + "'";
    }
 }
