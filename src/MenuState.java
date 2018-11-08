@@ -1,5 +1,6 @@
 public enum MenuState{
   LOGIN,
   SEARCH,
-  MAINMENU
+  MAINMENU,
+  EXIT
 }

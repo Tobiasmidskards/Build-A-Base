@@ -7,9 +7,12 @@ public class BuildABase
       Menu menu = new Menu();
       boolean runProgram = true;
 
+
       while (runProgram)
       {
-         menu.displayMenu();
+         runProgram = menu.displayMenu();
       }
+
+
    }
 }

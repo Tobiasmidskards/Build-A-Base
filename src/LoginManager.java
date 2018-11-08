@@ -9,12 +9,16 @@ public class LoginManager{
   private Scanner scanner;
   private boolean isLoggedIn;
 
-  public LoginManager() throws FileNotFoundException{
-    users = new File("login.txt");
-    scanner = new Scanner(users);
-    scanner.useDelimiter(" ");
-    if (users.canRead()) {
-      insertIntoUserList();
+  public LoginManager(){
+    try {
+      users = new File("login.txt");
+      scanner = new Scanner(users);
+      scanner.useDelimiter(" ");
+      if (users.canRead()) {
+        insertIntoUserList();
+      }
+    } catch (FileNotFoundException e) {
+      System.out.println(e);
     }
   }
 
@@ -33,17 +37,13 @@ public class LoginManager{
     return this.isLoggedIn;
   }
 
-  public boolean login(String username, String password) {
+  public boolean login(String username, String password){
 
-
-
-    while(scanner.hasNextLine()) {
-      String line = scanner.nextLine();
-      if (line.contains(username) && line.contains(password)) {
-        isLoggedIn = true;
-        return true;
+    for (int i = 0; i < userList.length; i++) {
+      if (username.equals(userList[i][0]) && password.equals(userList[i][1])) {
+       isLoggedIn = true;
+       return true;
       }
-
     }
     return false;
   }
