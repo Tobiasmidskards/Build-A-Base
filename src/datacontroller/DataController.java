@@ -17,12 +17,14 @@ public class DataController {
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
 	private StaffUser staff;
+	private boolean isLoggedIn;
 
 	public DataController() throws FileNotFoundException {
 	 	  this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
+			this.isLoggedIn = false;
 	}
 
    public void addTable(String tableName)
@@ -180,6 +182,7 @@ public class DataController {
 							staff = new StaffUser(id, userInfo[1], userInfo[2], userInfo[3], userInfo[4], userInfo[5], userInfo[6]);
 
 							System.out.println("\nSuccesfully logged in!");
+							isLoggedIn = true;
 
 							return true;
 						}
@@ -205,7 +208,12 @@ public class DataController {
 		return false;
 	}
 
+	public boolean getIsLoggedIn() {
+		return isLoggedIn;
+	}
+
 	public void logOut() {
+		isLoggedIn = false;
 		staff = new StaffUser();
 	}
 
