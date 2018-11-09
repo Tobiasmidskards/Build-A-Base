@@ -131,8 +131,7 @@ public class DataController {
 	 * @param index
 	 */
 	public void removeLine(int index) {
-		// TODO - implement DataController.removeEntry
-		throw new UnsupportedOperationException();
+
 	}
 
 	/**
