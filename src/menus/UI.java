@@ -11,16 +11,17 @@ public class UI{
     System.out.print("\033[H\033[2J");
   }
 
-  public void printTop() {
+  public void Top() {
     System.out.print("\n░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n");
     System.out.print("░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓ BUILD A BASE ▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n");
   }
 
-  public void printBot() {
+  public void Bot() {
     System.out.print("\n░░░▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ v. 1.0 ▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒░░░░\n");
   }
 
-  public void printMainMenu(boolean loggedIn) {
+  public void MainMenu(boolean loggedIn) {
+    Top();
     if(!loggedIn){
       System.out.println("\n1. Login");
     } else {
@@ -28,21 +29,26 @@ public class UI{
     }
     System.out.println("2. Search");
     System.out.println("3. Exit");
+    Bot();
+    input();
   }
 
-  public void printSearchMenu() {
-    System.out.println("\nWhich type do you want to search for?\n");
-    System.out.println("1. Author");
-    System.out.println("2. Title");
-    System.out.println("3. Back");
-  }
-
-  public void printSearchMenuAdmin() {
-    System.out.println("\nWhich type do you want to search for?\n");
-    System.out.println("1. Author");
-    System.out.println("2. Title");
-    System.out.println("3. Create");
-    System.out.println("4. Back");
+  public void SearchMenu(boolean loggedIn) {
+    Top();
+    if (loggedIn) {
+      System.out.println("\nWhich type do you want to search for?\n");
+      System.out.println("1. Author");
+      System.out.println("2. Title");
+      System.out.println("3. Create");
+      System.out.println("4. Back");
+    } else {
+      System.out.println("\nWhich type do you want to search for?\n");
+      System.out.println("1. Author");
+      System.out.println("2. Title");
+      System.out.println("3. Back");
+    }
+    Bot();
+    input();
   }
 
   public void login() {
@@ -53,21 +59,26 @@ public class UI{
 
   public void logout() {
     clear();
-    printTop();
+    Top();
     System.out.println("\nYou are now logged out.");
+    Bot();
   }
 
   public void failedLogin() {
     System.out.print("\nDo you want to try again? (y/n)\n");
-    printBot();
+    Bot();
     System.out.print("\n- ");
   }
 
   public void exit() {
-    printTop();
+    Top();
     System.out.println("\nThank you for using Build a Base.");
     System.out.println("Bye!");
-    printBot();
+    Bot();
     System.out.println("");
+  }
+
+  public void input(){
+    System.out.print("\n-  ");
   }
 }

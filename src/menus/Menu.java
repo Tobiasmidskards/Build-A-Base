@@ -2,7 +2,6 @@ package menus;
 
 import java.util.Scanner;
 import java.io.*;
-import database.*;
 import datacontroller.*;
 
 public class Menu {
@@ -11,17 +10,23 @@ public class Menu {
 	private Scanner scanner;
 	private MenuState state;
 	private UI ui;
+	private boolean loginStatus;
+	private String input;
 
 	public Menu() throws FileNotFoundException{
     this.dataController = new DataController();
 		this.scanner = new Scanner(System.in);
-		this.state = MenuState.MAINMENU;
 		this.ui = new UI();
+		this.state = MenuState.MAINMENU;
 	}
 
-	public boolean displayMenu() {
+	public boolean displayMenu()
+	{
 		ui.clear();
-		switch(state) {
+		loginStatus = dataController.getIsLoggedIn();
+
+		switch(state)
+		{
 			case MAINMENU:
 				displayMainMenu();
 				break;
@@ -29,7 +34,7 @@ public class Menu {
 				displayLoginMenu();
 				break;
 			case SEARCH:
-				displayAdminSearch();
+				displayDBLookupMenu();
 				break;
 			case EXIT:
 			  ui.clear();
@@ -39,31 +44,18 @@ public class Menu {
 		return true;
 	}
 
-	public void displayLogoutMenu() {
-		dataController.logOut();
-		ui.logout();
-		promptEnterMessage();
-	}
-
-	public void displayMainMenu() {
-		ui.printTop();
-		ui.printMainMenu(dataController.getIsLoggedIn());
-		ui.printBot();
-
-		System.out.print("\n-  ");
-	  String input = scanner.nextLine();
-		switch(input) {
+	public void displayMainMenu()
+	{
+		ui.MainMenu(loginStatus);
+	  input = scanner.nextLine();
+		switch(input)
+		{
 			case "1":
-				if (dataController.getIsLoggedIn()) {
-					displayLogoutMenu();
-				} else {
-					displayLoginMenu();
-				}
-
+				displayLoginMenu();
 				break;
 			case "2":
 				ui.clear();
-				displayAdminSearch();
+				displayDBLookupMenu();
 				break;
 			case "3":
 			 	state = MenuState.EXIT;
@@ -77,102 +69,102 @@ public class Menu {
 
 	}
 
-	public void displayLoginMenu() {
-		ui.login();
-		System.out.print("Username: ");
-	 	String username = scanner.nextLine();
-		System.out.print("Password: ");
-		String password = scanner.nextLine();
-
-		if (dataController.login(username, password)) {
+	public void displayLoginMenu()
+	{
+		if (loginStatus)
+		{
+			dataController.logOut();
+			ui.logout();
 			promptEnterMessage();
-			state = MenuState.SEARCH;
 		}
-		else {
-			ui.failedLogin();
-			String input = scanner.nextLine();
+		else
+		{
+			ui.login();
+			System.out.print("Username: ");
+		 	String username = scanner.nextLine();
+			System.out.print("Password: ");
+			String password = scanner.nextLine();
 
-			if (input.equals("y")) {
-				state = MenuState.LOGIN;
-			} else {
-				state = MenuState.MAINMENU;
+			if (dataController.login(username, password)) {
+				ui.Bot();
+				promptEnterMessage();
+				state = MenuState.SEARCH;
 			}
+			else
+			{
+				ui.failedLogin();
+				input = scanner.nextLine();
 
+				if (input.equals("y"))
+				{
+					state = MenuState.LOGIN;
+				}
+				else
+				{
+					state = MenuState.MAINMENU;
+				}
+
+			}
 		}
 	}
 
-	public void displayAdminSearch() {
-		if (dataController.getIsLoggedIn()){
-			displayDatabaseLookupMenuAdmin();
-		} else {
-			displayDatabaseLookupMenu();
-		}
-	}
+	public void displayDBLookupMenu() {
+		ui.clear();
+		ui.SearchMenu(loginStatus);
 
-	public void displayDatabaseLookupMenu() {
-		ui.printTop();
-		ui.printSearchMenu();
-		ui.printBot();
-		System.out.print("\n- ");
-		String input = scanner.nextLine();
-		switch(input) {
-			case "1":
-			  ui.clear();
-			  displayAdminSearch();
-				break;
-			case "2":
-				ui.clear();
-        System.out.println(dataController.readLine(3, "resources/namebasics.tsv"));
-				break;
-			case "3":
-				state = MenuState.MAINMENU;
-				break;
-			default:
-				ui.clear();
-				System.out.println("Try again please.");
-				displayAdminSearch();
-				break;
-		}
-	}
+		input = scanner.nextLine();
 
-	public void displayDatabaseLookupMenuAdmin() {
-			ui.printTop();
-			ui.printSearchMenuAdmin();
-			ui.printBot();
-			System.out.print("\n- ");
-			String input = scanner.nextLine();
-			switch(input) {
+		if (loginStatus)
+		{
+			// if logged in.
+			switch(input)
+			{
 				case "1":
-					ui.clear();
-					displayAdminSearch();
+					displayDBLookupMenu();
 					break;
 				case "2":
-					ui.clear();
-					displayAdminSearch();
+					displayDBLookupMenu();
 					break;
 				case "3":
-					ui.clear();
-					displayAdminSearch();
+					displayDBLookupMenu();
 					break;
 				case "4":
 					state = MenuState.MAINMENU;
 					break;
 				default:
-					ui.clear();
 					System.out.println("Try again please.");
-					displayAdminSearch();
+					displayDBLookupMenu();
 					break;
 			}
-
+		}
+		else
+		{
+			// if not logged in.
+			switch(input)
+			{
+				case "1":
+				  displayDBLookupMenu();
+					break;
+				case "2":
+					// test
+	        System.out.println(dataController.readLine(3, "resources/namebasics.tsv"));
+					promptEnterMessage();
+					displayDBLookupMenu();
+					break;
+				case "3":
+					state = MenuState.MAINMENU;
+					break;
+				default:
+					System.out.println("Try again please.");
+					displayDBLookupMenu();
+					break;
+			}
+		}
 	}
 
 	private void promptEnterMessage()
 	{
-		  ui.printBot();
 			System.out.print("\nEnter anything to continue..");
-			Scanner scanner = new Scanner(System.in);
 			scanner.nextLine();
-
 	}
-
 }
