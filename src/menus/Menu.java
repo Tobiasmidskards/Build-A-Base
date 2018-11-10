@@ -8,6 +8,7 @@ import datacontroller.DataController;
 import eventlog.Event;
 import search.SearchController;
 import database.Movie;
+import database.Person;
 
 public class Menu {
 
@@ -215,18 +216,27 @@ public class Menu {
 	private void searchForPerson() {
 		System.out.println("\nPlease type in the name you want to search for.");
 		ui.input();
+
 		input = scanner.nextLine();
 		System.out.println("\nReading from database.. This might take a while...");
-		String[] lines = searchController.searchPerson(input);
+
+		List<Person> persons = searchController.searchPerson(input);
+
 		System.out.println("\nYou have searched for: " + input);
 
-		if (lines[0] == null) {
-			System.out.println("Person was not found.");
+		if (persons.size() == 0)
+		{
+			System.out.println("No person were found.");
 		}
 		else
 		{
-			System.out.printf("\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n",
-												lines[1], lines[2], lines[3], lines[4], lines[5]);
+			System.out.println(persons.size() + " person(s) found.");
+
+			for (Person p : persons)
+			{
+				System.out.printf("nconst:\t\t\t%s\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
+												p.getNconst(), p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
+			}
 		}
 
 
@@ -236,9 +246,13 @@ public class Menu {
 	private void searchForTitle() {
 		System.out.println("\nPlease type in the title you want to search for.");
 		ui.input();
+
 		input = scanner.nextLine();
+
 		System.out.println("\nReading from database.. This might take a while...");
+
 		List<Movie> movies = searchController.searchTitle(input);
+
 		System.out.println("\nYou have searched for: " + input);
 
 		if (movies.size() == 0) {

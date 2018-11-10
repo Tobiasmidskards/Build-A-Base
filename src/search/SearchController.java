@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import database.Movie;
+import database.Person;
 
 public class SearchController
 {
@@ -20,7 +21,7 @@ public class SearchController
 		String[] entry;
 		String result = "";
 		boolean searchFinished = false;
-		int linesRead = 0;
+		Scanner scanner;
 
 		try
 		{
@@ -32,15 +33,13 @@ public class SearchController
 			}
 			else
 			{
-				fileScanner = new Scanner(table, "UTF-8");
+				scanner = new Scanner(table, "UTF-8");
 
-				while(!searchFinished)
+				while (!searchFinished)
 				{
-					if (fileScanner.hasNextLine())
+					if (scanner.hasNextLine())
 					{
-						entry = fileScanner.nextLine().split("\t");
-
-						linesRead++;
+						entry = scanner.nextLine().split("\t");
 
 						if (tconst.equals(entry[0]))
 						{
@@ -50,7 +49,6 @@ public class SearchController
 					}
 					else
 					{
-						System.out.println("Line does not exist. Lines read before stopping: " + linesRead);
 						searchFinished = true;
 					}
 				}
@@ -67,9 +65,9 @@ public class SearchController
 	public String[] getRatingAndVotes(String tconst)
 	{
 		String[] entry;
-		String[] result = new String[] { "Not found", "Not found"}; // default values in case nothing gets picked up in the process
+		String[] result = new String[] { "Not found", "Not found" }; // default values in case nothing gets picked up in the process
 		boolean searchFinished = false;
-		
+
 		Scanner scanner;
 
 		try
@@ -112,17 +110,16 @@ public class SearchController
 		return result;
 	}
 
-	public String[] searchPerson(String name) {
+	public List<Person> searchPerson(String name) {
 		// find person in namebasics.txt
 		// lookup titles from tconst.
 		// Find titles in titlebasics.txt
 		// show line[2] for primarytitle
 		
+		int maxResults = 5;
 		String[] entry;
-		String[] result = new String[6];
+		List<Person> persons = new ArrayList<>();		
 		String[] movies;
-
-		boolean searchFinished = false;
 
    		try
    		{
@@ -136,40 +133,35 @@ public class SearchController
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 				
-				while(!searchFinished)
+				while (fileScanner.hasNextLine() && persons.size() < maxResults)
 				{
-        			if (fileScanner.hasNextLine())
-        			{
-             			entry = fileScanner.nextLine().split("\t");
+             		entry = fileScanner.nextLine().split("\t");
 						
-						if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
+					if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
+					{
+						/*
+						result[0] = entry[0]; // nconst
+						result[1] = entry[1]; // PrimaryName
+						result[2] = entry[2]; // Birth
+						result[3] = entry[3]; // Death
+						result[4] = entry[4].replace(",", ", "); // Profession
+						result[5] = "";*/
+
+						if (entry[3].contains("\\N"))
 						{
-							result[0] = entry[0]; // nconst
-							result[1] = entry[1]; // PrimaryName
-							result[2] = entry[2]; // Birth
-							result[3] = entry[3]; // Death
-							result[4] = entry[4].replace(",", ", "); // Profession
-							result[5] = "";
-
-							movies = entry[5].split(","); // Movie Titles
-
-							if (result[3].contains("\\N"))
-							{
-								result[3] = "-";
-							}
-
-							for (String m : movies)
-							{
-								result[5] += "- " + getTitle(m) + "\n";
-							}
-
-							searchFinished = true;
+							entry[3] = "-";
 						}
-        			}
-        			else
-        			{
-						searchFinished = true;
-        			}
+
+						movies = entry[5].split(","); // Movie Titles
+						String titles = "";
+
+						for (String m : movies)
+						{
+							titles += "- " + getTitle(m) + "\n";
+						}
+
+						persons.add(new Person(entry[0], entry[1], entry[2], entry[3], entry[4], titles));
+					}
 				}
     		}
     	}
@@ -179,11 +171,12 @@ public class SearchController
     		System.out.println(e);
     	}
 
-		return result;
+		return persons;
 	}
 
 	public List<Movie> searchTitle(String title)
 	{
+		int maxResults = 10;
 		String[] entry;
 		List<Movie> movies = new ArrayList<>();
 		boolean searchFinished = false;
@@ -200,11 +193,11 @@ public class SearchController
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 				
-				while (fileScanner.hasNextLine())
+				while (fileScanner.hasNextLine() && movies.size() < maxResults)
 				{
              		entry = fileScanner.nextLine().split("\t");
 						
-					if (title.toLowerCase().equals(entry[2].toLowerCase())) //make case insensitive to help.. also check both primary and original title
+					if (title.toLowerCase().equals(entry[2].toLowerCase()) && entry[1].toLowerCase().equals("movie")) //make case insensitive to help.. also check both primary and original title
 					{
 							/*
 							entry[0]; // tconst
