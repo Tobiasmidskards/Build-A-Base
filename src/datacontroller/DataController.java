@@ -199,7 +199,7 @@ public class DataController {
 					{
 								entry = fileScanner.nextLine().split("\t");
 								if (tconst.equals(entry[0])) {
-									result = "("+ entry[5] + ") " + entry[2]; // ID
+									result = "("+ entry[5] + ") " + entry[2]; // (YEAR) Title
 									match = true;
 								}
 					}
