@@ -14,13 +14,11 @@ public class DataController {
 
 	private Scanner fileScanner;
 	private List<String> filePaths;
-	private List<Movie> searchResults;
 	private EventLog eventLogger;
 	private StaffUser staff;
 
 	public DataController() throws FileNotFoundException {
-	 	  this.filePaths = new ArrayList<>();
-     	this.searchResults = new ArrayList<>();
+		this.filePaths = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
 	}
@@ -29,7 +27,7 @@ public class DataController {
    {
    		try
    		{
-   			File table = new File(tableName + ".tsv");
+   			File table = new File("resources/" + tableName + ".tsv");
       		if (!table.exists())
       		{
          		table.createNewFile();
@@ -47,7 +45,7 @@ public class DataController {
    {
    		if (staff.getId() > 0) // -1 means not logged in, a boolean would be redundant
       	{
-      		File table = new File(tableName + ".tsv");
+      		File table = new File("resources/" + tableName + ".tsv");
          	if (table.exists())
          	{
             	table.delete();
@@ -70,7 +68,7 @@ public class DataController {
 		{
 			try
 			{
-				File table = new File(tableName + ".tsv");
+				File table = new File("resources/" + tableName + ".tsv");
 				if (table.canWrite())
 				{
 					FileWriter fileWriter = new FileWriter(table, true);
@@ -103,13 +101,13 @@ public class DataController {
 	 *
 	 * @param index
 	 */
-	public String readLine(int index, String tableName)
+	public String[] readLine(int index, String tableName)
 	{
-		String entry = "";
+		String[] entry = null;
 
    		try
    		{
-			File table = new File(tableName + ".tsv");
+			File table = new File("resources/" + tableName + ".tsv");
 
     		if (!table.canRead())
     		{
@@ -123,14 +121,56 @@ public class DataController {
     			{
             		if (fileScanner.hasNextLine())
             		{
-               			entry = fileScanner.nextLine();
+               			entry = fileScanner.nextLine().split("\t");
             		}
             		else
             		{
                			System.out.println("Line does not exist. Lines read before stopping: " + i);
-               			entry = "";
+               			entry = null;
             		}
         		}
+    		}
+    	}
+    	catch (IOException e)
+    	{
+    		System.out.println(e);
+    	}
+
+    	return entry;
+	}
+
+	public String[] readLine(String primaryKey, String tableName)
+	{
+		String[] entry = null;
+
+   		try
+   		{
+			File table = new File("resources/" + tableName + ".tsv");
+
+    		if (!table.canRead())
+    		{
+    			System.out.println("Cannot read from table: '" + tableName + "'");
+    		}
+    		else
+    		{
+    			fileScanner = new Scanner(table, "UTF-8");
+
+    			boolean searchFinished = false;
+    			while (!searchFinished)
+    			{
+    				if (fileScanner.hasNextLine())
+    				{
+    					entry = fileScanner.nextLine().split("\t");
+    					if (primaryKey.equals(entry[0]))
+    					{
+    						searchFinished = true;
+    					}
+    				}
+    				else
+    				{
+    					searchFinished = true;
+    				}
+    			}
     		}
     	}
     	catch (IOException e)
@@ -156,142 +196,6 @@ public class DataController {
 	 */
 	public void removeLine(int index) {
 
-	}
-
-	/**
-	 *
-	 * @param author
-	 */
-	public List<Movie> showMovieList(String author) {
-		// TODO - implement DataController.showMovieList
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 *
-	 * @param year
-	 */
-	public List<Movie> showMovieList(LocalDateTime year) {
-		// TODO - implement DataController.showMovieList
-		throw new UnsupportedOperationException();
-	}
-
-	public String getTitle(String tconst) {
-		String[] entry;
-		String result = "";
-		boolean searchFinished = false;
-		int linesRead = 0;
-
-		try
-		{
-			File table = new File("resources/titlebasics.tsv");
-
-			if (!table.canRead())
-			{
-				System.out.println("Cannot read from table: 'resources/titlebasics.tsv'");
-			}
-			else
-			{
-				fileScanner = new Scanner(table, "UTF-8");
-
-				while(!searchFinished)
-				{
-					if (fileScanner.hasNextLine())
-					{
-						entry = fileScanner.nextLine().split("\t");
-
-						linesRead++;
-
-						if (tconst.equals(entry[0]))
-						{
-							result = "("+ entry[5] + ") " + entry[2]; // (YEAR) Title
-							searchFinished = true;
-						}
-					}
-					else
-					{
-						System.out.println("Line does not exist. Lines read before stopping: " + linesRead);
-						searchFinished = true;
-					}
-				}
-			}
-		}
-		catch (IOException e)
-		{
-			System.out.println(e);
-		}
-
-		return result;
-	}
-
-	public String[] searchPerson(String name) {
-		// find person in namebasics.txt
-		// lookup titles from tconst.
-		// Find titles in titlebasics.txt
-		// show line[2] for primarytitle
-		
-		String[] entry;
-		String[] result = new String[6];
-		String[] movies;
-
-		boolean searchFinished = false;
-
-   		try
-   		{
-			File table = new File("resources/namebasics.tsv");
-
-    		if (!table.canRead())
-    		{
-    			System.out.println("Cannot read from table: 'resources/namebasics.tsv'");
-    		}
-    		else
-    		{
-    			fileScanner = new Scanner(table, "UTF-8");
-				
-				while(!searchFinished)
-				{
-        			if (fileScanner.hasNextLine())
-        			{
-             			entry = fileScanner.nextLine().split("\t");
-						
-						if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
-						{
-							result[0] = entry[0]; // ID
-							result[1] = entry[1]; // PrimaryName
-							result[2] = entry[2]; // Birth
-							result[3] = entry[3]; // Death
-							result[4] = entry[4].replace(",", ", "); // Profession
-							result[5] = "";
-
-							movies = entry[5].split(","); // Movie Titles
-
-							if (result[3].contains("\\N"))
-							{
-								result[3] = "Not dead";
-							}
-
-							for (String m : movies)
-							{
-								result[5] += "- " + getTitle(m) + "\n";
-							}
-
-							searchFinished = true;
-						}
-        			}
-        			else
-        			{
-						searchFinished = true;
-        			}
-				}
-    		}
-    	}
-
-    	catch (IOException e)
-    	{
-    		System.out.println(e);
-    	}
-
-			return result;
 	}
 
 

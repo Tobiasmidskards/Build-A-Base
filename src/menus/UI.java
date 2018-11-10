@@ -82,7 +82,7 @@ public class UI{
   public void failedLogin() {
     System.out.print("\nDo you want to try again? (y/n)\n");
     Bot();
-    System.out.print("\n- ");
+    input();
   }
 
   public void exit() {
