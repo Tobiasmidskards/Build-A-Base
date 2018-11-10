@@ -7,6 +7,7 @@ import java.io.*;
 import datacontroller.DataController;
 import eventlog.Event;
 import search.SearchController;
+import database.Movie;
 
 public class Menu {
 
@@ -215,6 +216,7 @@ public class Menu {
 		System.out.println("\nPlease type in the name you want to search for.");
 		ui.input();
 		input = scanner.nextLine();
+		System.out.println("\nReading from database.. This might take a while...");
 		String[] lines = searchController.searchPerson(input);
 		System.out.println("\nYou have searched for: " + input);
 
@@ -235,16 +237,22 @@ public class Menu {
 		System.out.println("\nPlease type in the title you want to search for.");
 		ui.input();
 		input = scanner.nextLine();
-		String[] lines = searchController.searchTitle(input);
+		System.out.println("\nReading from database.. This might take a while...");
+		List<Movie> movies = searchController.searchTitle(input);
 		System.out.println("\nYou have searched for: " + input);
 
-		if (lines[0] == null) {
-			System.out.println("Title was not found.");
+		if (movies.size() == 0) {
+			System.out.println("No titles were found.");
 		}
 		else
 		{
-			System.out.printf("\ntconst:\t\t\t\t%s\nTitle type:\t\t\t%s\nPrimary Title:\t\t%s\nOriginal Title:\t%s\nIs adult:\t\t\t%s\nStart year:\t\t\t%s\nEnd year:\t\t\t%s\nRuntime:\t\t\t\t%s minutes\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s",
-												lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6], lines[7], lines[8], lines[9], lines[10]);
+			System.out.println(movies.size() + " title(s) found.");
+
+			for (Movie m : movies)
+			{
+				System.out.printf("\ntconst:\t\t\t\t%s\nTitle type:\t\t\t%s\nPrimary Title:\t\t%s\nOriginal Title:\t%s\nIs adult:\t\t\t%s\nStart year:\t\t\t%s\nEnd year:\t\t\t%s\nRuntime:\t\t\t\t%s minutes\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
+												m.getTconst(), m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getEndYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
+			}
 		}
 
 

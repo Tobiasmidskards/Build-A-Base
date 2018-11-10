@@ -2,6 +2,9 @@ package search;
 
 import java.util.Scanner;
 import java.io.*;
+import java.util.List;
+import java.util.ArrayList;
+import database.Movie;
 
 public class SearchController
 {
@@ -64,9 +67,10 @@ public class SearchController
 	public String[] getRatingAndVotes(String tconst)
 	{
 		String[] entry;
-		String[] result = new String[2];
+		String[] result = new String[] { "Not found", "Not found"}; // default values in case nothing gets picked up in the process
 		boolean searchFinished = false;
-		int linesRead = 0;
+		
+		Scanner scanner;
 
 		try
 		{
@@ -78,15 +82,13 @@ public class SearchController
 			}
 			else
 			{
-				fileScanner = new Scanner(table, "UTF-8");
+				scanner = new Scanner(table, "UTF-8");
 
-				while(!searchFinished)
+				while (!searchFinished)
 				{
-					if (fileScanner.hasNextLine())
+					if (scanner.hasNextLine())
 					{
-						entry = fileScanner.nextLine().split("\t");
-
-						linesRead++;
+						entry = scanner.nextLine().split("\t");
 
 						if (tconst.equals(entry[0]))
 						{
@@ -97,7 +99,6 @@ public class SearchController
 					}
 					else
 					{
-						System.out.println("Line does not exist. Lines read before stopping: " + linesRead);
 						searchFinished = true;
 					}
 				}
@@ -181,12 +182,10 @@ public class SearchController
 		return result;
 	}
 
-	public String[] searchTitle(String title)
+	public List<Movie> searchTitle(String title)
 	{
 		String[] entry;
-		String[] result = new String[11];
-		String[] movies;
-
+		List<Movie> movies = new ArrayList<>();
 		boolean searchFinished = false;
 
    		try
@@ -201,58 +200,52 @@ public class SearchController
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 				
-				while(!searchFinished)
+				while (fileScanner.hasNextLine())
 				{
-        			if (fileScanner.hasNextLine())
-        			{
-             			entry = fileScanner.nextLine().split("\t");
+             		entry = fileScanner.nextLine().split("\t");
 						
-						if (title.toLowerCase().equals(entry[2].toLowerCase()) || title.toLowerCase().equals(entry[3].toLowerCase())) //make case insensitive to help.. also check both primary and original title
+					if (title.toLowerCase().equals(entry[2].toLowerCase())) //make case insensitive to help.. also check both primary and original title
+					{
+							/*
+							entry[0]; // tconst
+							entry[1]; // titleType
+							entry[2]; // primaryTitle
+							entry[3]; // originalTitle
+							entry[4]; // isAdult
+							entry[5]; // startYear
+							entry[6]; // endYear
+							entry[7]; // runTimeMinutes
+							entry[8]; // genres
+							*/
+
+						if (entry[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
 						{
-							result[0] = entry[0]; // tconst
-							result[1] = entry[1]; // titleType
-							result[2] = entry[2]; // primaryTitle
-							result[3] = entry[3]; // originalTitle
-							result[4] = entry[4]; // isAdult
-							result[5] = entry[5]; // startYear
-							result[6] = entry[6]; // endYear
-							result[7] = entry[7]; // runTimeMinutes
-							result[8] = entry[8].replace(",", ", "); // genres
-
-							if (result[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
-							{
-								result[4] = "No";
-							}
-							else
-							{
-								result[4] = "Yes";
-							}
-
-							if (result[6].contains("\\N")) //replace \N with -
-							{
-								result[6] = "-";
-							}
-
-							String[] ratingAndVote = getRatingAndVotes(result[0]);
-							result[9] = ratingAndVote[0];
-							result[10] = ratingAndVote[1];
-
-							searchFinished = true;
+							entry[4] = "No";
 						}
-        			}
-        			else
-        			{
-						searchFinished = true;
+						else
+						{
+							entry[4] = "Yes";
+						}
+
+						if (entry[6].contains("\\N")) //replace \N with -
+						{
+							entry[6] = "-";
+						}
+
+						entry[8] = entry[8].replace(",", ", ");
+
+						String[] ratingAndVote = getRatingAndVotes(entry[0]);
+
+						movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
         			}
 				}
     		}
     	}
-
     	catch (IOException e)
     	{
     		System.out.println(e);
     	}
 
-		return result;
+		return movies;
 	}
 }
