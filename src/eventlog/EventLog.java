@@ -29,25 +29,6 @@ public class EventLog {
 
 	/**
 	 *
-	 * @param date
-	 */
-	public List<Event> listEvents(LocalDateTime date)
-	{
-		List<Event> tempList = new ArrayList<>();
-
-     	for (Event e : eventList)
-     	{
-        	if (e.getDate().truncatedTo(ChronoUnit.DAYS) == date)
-        	{
-           		tempList.add(e);
-        	}
-     	}
-
-     	return tempList;
-	}
-
-	/**
-	 *
 	 * @param type
 	 */
 	public List<Event> listEvents(EventType type) {
