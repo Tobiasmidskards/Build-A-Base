@@ -9,16 +9,22 @@ import java.util.Scanner;
 
 public class EventLog {
 
-	private PrintWriter printWriter
+	private PrintWriter printWriter;
 	private List<Event> eventList;
 	private String LOGFILE = "eventlog/eventlog.txt";
 
 	public EventLog()
-		throws FileNotFoundException
 	{
-		FileWriter logFile = new FileWriter(LOGFILE, true);
-		BufferedWriter bufferedWriter = new BufferedWriter(logFile);
-		PrintWriter printWriter = new PrintWriter(bufferedWriter);
+		try
+		{
+			FileWriter logFile = new FileWriter(LOGFILE, true);
+			BufferedWriter bufferedWriter = new BufferedWriter(logFile);
+			PrintWriter printWriter = new PrintWriter(bufferedWriter);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
 
 		eventList = new ArrayList<>();
 	}
@@ -64,21 +70,29 @@ public class EventLog {
 	}
 
 	public List<String> getAllLogFileEvents() {
-		File logFile = new File(LOGFILE);
-		if (!logFile.canRead())
+		try
 		{
+			File logFile = new File(LOGFILE);
+			if (!logFile.canRead())
+			{
+				return new ArrayList<>();
+			}
+
+			Scanner input = new Scanner(logFile);
+			List<String> events = new ArrayList<>();
+
+			while (input.hasNextLine())
+			{
+				events.add(input.nextLine());
+			}
+
+			return events;
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
 			return new ArrayList<>();
 		}
-
-		Scanner input = new Scanner(logFile);
-		List<String> events = new ArrayList<>();
-
-		while (input.hasNextLine())
-		{
-			events.add(input.nextLine());
-		}
-
-		return events;
 	}
 
 	/**
