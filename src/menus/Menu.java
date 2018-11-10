@@ -2,7 +2,7 @@ package menus;
 
 import java.util.Scanner;
 import java.io.*;
-import datacontroller.*;
+import datacontroller.DataController;
 
 public class Menu {
 
@@ -53,13 +53,16 @@ public class Menu {
 			case "1":
 				displayLoginMenu();
 				break;
+
 			case "2":
 				ui.clear();
 				displayDBLookupMenu();
 				break;
+
 			case "3":
 			 	state = MenuState.EXIT;
 				break;
+
 			default:
 			  	ui.clear();
 				System.out.println("Try again please.");
@@ -122,15 +125,19 @@ public class Menu {
 				case "1":
 					displayDBLookupMenu();
 					break;
+
 				case "2":
 					displayDBLookupMenu();
 					break;
+
 				case "3":
 					displayDBLookupMenu();
 					break;
+
 				case "4":
 					state = MenuState.MAINMENU;
 					break;
+
 				default:
 					System.out.println("Try again please.");
 					displayDBLookupMenu();
@@ -145,15 +152,18 @@ public class Menu {
 				case "1":
 				  displayDBLookupMenu();
 					break;
+
 				case "2":
 					// test
 	        System.out.println(dataController.readLine(3, "resources/namebasics.tsv"));
 					promptEnterMessage();
 					displayDBLookupMenu();
 					break;
+
 				case "3":
 					state = MenuState.MAINMENU;
 					break;
+					
 				default:
 					System.out.println("Try again please.");
 					displayDBLookupMenu();

@@ -2,7 +2,7 @@ package datacontroller;
 
 import login.StaffUser;
 import eventlog.*;
-import database.*;
+import database.Movie;
 
 import java.util.Scanner;
 import java.util.List;
