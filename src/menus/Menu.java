@@ -220,7 +220,7 @@ public class Menu {
 		}
 		else
 		{
-			System.out.printf("\nPerson:\t\t%s\nBirth:\t\t%s\nDeath:\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n",
+			System.out.printf("\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n",
 												lines[1], lines[2], lines[3], lines[4], lines[5]);
 		}
 

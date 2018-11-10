@@ -179,9 +179,8 @@ public class DataController {
 	public String getTitle(String tconst) {
 		String[] entry;
 		String result = "";
-		String[] proffesions;
-		String[] movies;
-		boolean match = false;
+		boolean searchFinished = false;
+		int linesRead = 0;
 
 		try
 		{
@@ -194,19 +193,25 @@ public class DataController {
 			else
 			{
 				fileScanner = new Scanner(table, "UTF-8");
-				while(!match){
+
+				while(!searchFinished)
+				{
 					if (fileScanner.hasNextLine())
 					{
-								entry = fileScanner.nextLine().split("\t");
-								if (tconst.equals(entry[0])) {
-									result = "("+ entry[5] + ") " + entry[2]; // (YEAR) Title
-									match = true;
-								}
+						entry = fileScanner.nextLine().split("\t");
+
+						linesRead++;
+
+						if (tconst.equals(entry[0]))
+						{
+							result = "("+ entry[5] + ") " + entry[2]; // (YEAR) Title
+							searchFinished = true;
+						}
 					}
 					else
 					{
-								System.out.println("Line does not exist. Lines read before stopping");
-								match = true;
+						System.out.println("Line does not exist. Lines read before stopping: " + linesRead);
+						searchFinished = true;
 					}
 				}
 			}
@@ -224,14 +229,12 @@ public class DataController {
 		// lookup titles from tconst.
 		// Find titles in titlebasics.txt
 		// show line[2] for primarytitle
-		  String[] entry;
-			String[] result = new String[10];
-			String[] proffesions;
-			String[] movies;
-		  boolean match = false;
-			String proffesion;
-			String movie;
-			int i;
+		
+		String[] entry;
+		String[] result = new String[6];
+		String[] movies;
+
+		boolean searchFinished = false;
 
    		try
    		{
@@ -244,40 +247,42 @@ public class DataController {
     		else
     		{
     			fileScanner = new Scanner(table, "UTF-8");
-					while(!match){
-        		if (fileScanner.hasNextLine())
-        		{
+				
+				while(!searchFinished)
+				{
+        			if (fileScanner.hasNextLine())
+        			{
              			entry = fileScanner.nextLine().split("\t");
-									if (name.equals(entry[1])) {
-										result[0] = entry[0]; // ID
-										result[1] = entry[1]; // PrimaryName
-										result[2] = entry[2]; // Birth
-										result[3] = entry[3]; // Death
+						
+						if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
+						{
+							result[0] = entry[0]; // ID
+							result[1] = entry[1]; // PrimaryName
+							result[2] = entry[2]; // Birth
+							result[3] = entry[3]; // Death
+							result[4] = entry[4].replace(",", ", "); // Profession
+							result[5] = "";
 
-										proffesions = entry[4].split(",");
-										proffesion = proffesions[0];
-										for(i = 1; i<proffesions.length; i++) {
-											proffesion = (proffesion + ", " + proffesions[i]);
-										}
-										result[4] = proffesion; // Proffession
+							movies = entry[5].split(","); // Movie Titles
 
-										movies = entry[5].split(",");
-										movie = "- " + getTitle(movies[0]);
+							if (result[3].contains("\\N"))
+							{
+								result[3] = "Not dead";
+							}
 
-										for (i = 1; i<movies.length; i++) {
-											movie = (movie + "\n- " + getTitle(movies[i]));
-										}
+							for (String m : movies)
+							{
+								result[5] += "- " + getTitle(m) + "\n";
+							}
 
-										result[5] = movie; // Known for
-
-										match = true;
-									}
-        		}
-        		else
-        		{
-									match = true;
-        		}
-					}
+							searchFinished = true;
+						}
+        			}
+        			else
+        			{
+						searchFinished = true;
+        			}
+				}
     		}
     	}
 
