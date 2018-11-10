@@ -124,6 +124,7 @@ public class Menu {
 		{
 			case "1":
 				displayElementsInEventList(dataController.getEventLogger().listAllEvents());
+				promptEnterMessage();
 				break;
 			case "2":
 
@@ -137,17 +138,16 @@ public class Menu {
 					displayElementsInEventList(dataController.getEventLogger().listEvents(scanner.nextInt()));
 					break;
 				}
-
+				promptEnterMessage();
 				break;
 			case "4":
-				state = MenuState.MAINMENU;
+				state = MenuState.SEARCH;
 				break;
 			default:
 				System.out.println("Try again please.");
 				break;
 		}
 
-		promptEnterMessage();
 	}
 
 	public void displayDBLookupMenu() {
@@ -220,7 +220,8 @@ public class Menu {
 		}
 		else
 		{
-			System.out.printf("\nPerson:\t\t%s\nBirth:\t\t%s\nDeath:\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n", lines[1], lines[2], lines[3], lines[4], lines[5]);
+			System.out.printf("\nPerson:\t\t%s\nBirth:\t\t%s\nDeath:\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n",
+												lines[1], lines[2], lines[3], lines[4], lines[5]);
 		}
 
 

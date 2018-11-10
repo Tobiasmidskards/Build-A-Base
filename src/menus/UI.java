@@ -56,7 +56,7 @@ public class UI{
   {
     Top();
 
-    System.out.println("\nWhich type do you want to search for?\n");
+    System.out.println("\nEvent Menu\n");
     System.out.println("1. All events");
     System.out.println("2. Specific eventType");
     System.out.println("3. Specific id");
