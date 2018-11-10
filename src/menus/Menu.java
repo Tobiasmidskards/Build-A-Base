@@ -121,6 +121,7 @@ public class Menu {
 			switch(input)
 			{
 				case "1":
+					searchForPerson();
 					break;
 
 				case "2":
@@ -144,12 +145,10 @@ public class Menu {
 			switch(input)
 			{
 				case "1":
+					searchForPerson();
 					break;
-
 				case "2":
-					// test
-	        System.out.println(dataController.readLine(3, "resources/namebasics.tsv"));
-					promptEnterMessage();
+
 					break;
 
 				case "3":
@@ -161,6 +160,25 @@ public class Menu {
 					break;
 			}
 		}
+	}
+
+	private void searchForPerson() {
+		System.out.println("\nPlease type in the name you want to search for.");
+		ui.input();
+		input = scanner.nextLine();
+		String[] lines = dataController.searchPerson(input);
+		System.out.println("\nYou have searched for: " + input);
+
+		if (lines[0] == null) {
+			System.out.println("We did not find the person.");
+		}
+		else
+		{
+			System.out.printf("\nPerson:\t\t%s\nBirth:\t\t%s\nDeath:\t\t%s\nProffession:\t%s\n\nKnown for titles:\n%s\n", lines[1], lines[2], lines[3], lines[4], lines[5]);
+		}
+
+
+		promptEnterMessage();
 	}
 
 	private void promptEnterMessage()

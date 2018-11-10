@@ -152,6 +152,119 @@ public class DataController {
 		throw new UnsupportedOperationException();
 	}
 
+	public String getTitle(String tconst) {
+		String[] entry;
+		String result = "";
+		String[] proffesions;
+		String[] movies;
+		boolean match = false;
+
+		try
+		{
+			File table = new File("resources/titlebasics.tsv");
+
+			if (!table.canRead())
+			{
+				System.out.println("Cannot read from table: 'resources/titlebasics.tsv'");
+			}
+			else
+			{
+				fileScanner = new Scanner(table, "UTF-8");
+				while(!match){
+					if (fileScanner.hasNextLine())
+					{
+								entry = fileScanner.nextLine().split("\t");
+								if (tconst.equals(entry[0])) {
+									result = "("+ entry[5] + ") " + entry[2]; // ID
+									match = true;
+								}
+					}
+					else
+					{
+								System.out.println("Line does not exist. Lines read before stopping");
+								match = true;
+					}
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			System.out.println(e);
+		}
+
+		return result;
+	}
+
+	public String[] searchPerson(String name) {
+		// find person in namebasics.txt
+		// lookup titles from tconst.
+		// Find titles in titlebasics.txt
+		// show line[2] for primarytitle
+		  String[] entry;
+			String[] result = new String[10];
+			String[] proffesions;
+			String[] movies;
+		  boolean match = false;
+			String proffesion;
+			String movie;
+			int i;
+
+   		try
+   		{
+			File table = new File("resources/namebasics.tsv");
+
+    		if (!table.canRead())
+    		{
+    			System.out.println("Cannot read from table: 'resources/namebasics.tsv'");
+    		}
+    		else
+    		{
+    			fileScanner = new Scanner(table, "UTF-8");
+					while(!match){
+        		if (fileScanner.hasNextLine())
+        		{
+             			entry = fileScanner.nextLine().split("\t");
+									if (name.equals(entry[1])) {
+										result[0] = entry[0]; // ID
+										result[1] = entry[1]; // PrimaryName
+										result[2] = entry[2]; // Birth
+										result[3] = entry[3]; // Death
+
+										proffesions = entry[4].split(",");
+										proffesion = proffesions[0];
+										for(i = 1; i<proffesions.length; i++) {
+											proffesion = (proffesion + ", " + proffesions[i]);
+										}
+										result[4] = proffesion; // Proffession
+
+										movies = entry[5].split(",");
+										movie = "- " + getTitle(movies[0]);
+
+										for (i = 1; i<movies.length; i++) {
+											movie = (movie + "\n- " + getTitle(movies[i]));
+										}
+
+										result[5] = movie; // Known for
+
+										match = true;
+									}
+        		}
+        		else
+        		{
+									match = true;
+        		}
+					}
+    		}
+    	}
+
+    	catch (IOException e)
+    	{
+    		System.out.println(e);
+    	}
+
+			return result;
+	}
+
 	/**
 	 *
 	 * @param username

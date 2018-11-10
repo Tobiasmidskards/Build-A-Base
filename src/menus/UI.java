@@ -37,13 +37,13 @@ public class UI{
     Top();
     if (loggedIn) {
       System.out.println("\nWhich type do you want to search for?\n");
-      System.out.println("1. Author");
+      System.out.println("1. Person");
       System.out.println("2. Title");
       System.out.println("3. Create");
       System.out.println("4. Back");
     } else {
       System.out.println("\nWhich type do you want to search for?\n");
-      System.out.println("1. Author");
+      System.out.println("1. Person");
       System.out.println("2. Title");
       System.out.println("3. Back");
     }

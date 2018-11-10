@@ -13,10 +13,10 @@ public class Movie {
 
 	public Movie(String title, LocalDateTime year, int rating, List<String> actors, List<String> category) {
 		this.title = title;
-     	this.year = year;
-     	this.rating = rating;
-     	this.actors = actors;
-     	this.category = category;
+   	this.year = year;
+   	this.rating = rating;
+   	this.actors = actors;
+   	this.category = category;
 	}
 
 }
