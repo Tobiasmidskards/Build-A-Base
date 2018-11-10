@@ -51,12 +51,11 @@ public class Menu {
 		switch(input)
 		{
 			case "1":
-				displayLoginMenu();
+				state = MenuState.LOGIN;
 				break;
 
 			case "2":
-				ui.clear();
-				displayDBLookupMenu();
+				state = MenuState.SEARCH;
 				break;
 
 			case "3":
@@ -64,9 +63,7 @@ public class Menu {
 				break;
 
 			default:
-			  	ui.clear();
 				System.out.println("Try again please.");
-				displayMainMenu();
 				break;
 		}
 
@@ -79,6 +76,7 @@ public class Menu {
 			dataController.logOut();
 			ui.logout();
 			promptEnterMessage();
+			state = MenuState.MAINMENU;
 		}
 		else
 		{
@@ -123,15 +121,12 @@ public class Menu {
 			switch(input)
 			{
 				case "1":
-					displayDBLookupMenu();
 					break;
 
 				case "2":
-					displayDBLookupMenu();
 					break;
 
 				case "3":
-					displayDBLookupMenu();
 					break;
 
 				case "4":
@@ -140,7 +135,6 @@ public class Menu {
 
 				default:
 					System.out.println("Try again please.");
-					displayDBLookupMenu();
 					break;
 			}
 		}
@@ -150,23 +144,20 @@ public class Menu {
 			switch(input)
 			{
 				case "1":
-				  displayDBLookupMenu();
 					break;
 
 				case "2":
 					// test
 	        System.out.println(dataController.readLine(3, "resources/namebasics.tsv"));
 					promptEnterMessage();
-					displayDBLookupMenu();
 					break;
 
 				case "3":
 					state = MenuState.MAINMENU;
 					break;
-					
+
 				default:
 					System.out.println("Try again please.");
-					displayDBLookupMenu();
 					break;
 			}
 		}
