@@ -1,8 +1,11 @@
 package menus;
 
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.*;
 import datacontroller.DataController;
+import eventlog.Event;
 
 public class Menu {
 
@@ -36,6 +39,9 @@ public class Menu {
 			case SEARCH:
 				displayDBLookupMenu();
 				break;
+			case EVENTLOG:
+				displayEventLogMenu();
+				break;
 			case EXIT:
 			  ui.clear();
 				ui.exit();
@@ -47,7 +53,7 @@ public class Menu {
 	public void displayMainMenu()
 	{
 		ui.MainMenu(loginStatus);
-	  input = scanner.nextLine();
+	  	input = scanner.nextLine();
 		switch(input)
 		{
 			case "1":
@@ -109,6 +115,41 @@ public class Menu {
 		}
 	}
 
+	public void displayEventLogMenu() {
+		ui.EventLogMenu();
+
+		input = scanner.nextLine();
+
+		switch (input)
+		{
+			case "1":
+				displayElementsInEventList(dataController.getEventLogger().listAllEvents());
+				break;
+			case "2":
+			
+				break;
+			case "3":
+				System.out.println("ID to search for");
+				ui.input();
+
+				while (scanner.hasNextInt())
+				{
+					displayElementsInEventList(dataController.getEventLogger().listEvents(scanner.nextInt()));
+					break;
+				}
+
+				break;
+			case "4":
+				state = MenuState.MAINMENU;
+				break;
+			default:
+				System.out.println("Try again please.");
+				break;
+		}
+
+		promptEnterMessage();
+	}
+
 	public void displayDBLookupMenu() {
 		ui.clear();
 		ui.SearchMenu(loginStatus);
@@ -121,15 +162,21 @@ public class Menu {
 			switch(input)
 			{
 				case "1":
+					
 					break;
 
 				case "2":
+
 					break;
 
 				case "3":
 					break;
 
 				case "4":
+					state = MenuState.EVENTLOG;
+					break;
+
+				case "5":
 					state = MenuState.MAINMENU;
 					break;
 
@@ -160,6 +207,21 @@ public class Menu {
 					System.out.println("Try again please.");
 					break;
 			}
+		}
+	}
+
+	private void displayElementsInEventList(List<Event> events)
+	{
+		if (events.size() > 0)
+		{
+			for (Event event : events)
+			{
+				System.out.println(event);
+			}
+		}
+		else
+		{
+			System.out.println("No events to display.");
 		}
 	}
 

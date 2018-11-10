@@ -17,24 +17,24 @@ public class DataController {
 	private List<Movie> searchResults;
 	private EventLog eventLogger;
 	private StaffUser staff;
-	private boolean isLoggedIn;
 
 	public DataController() throws FileNotFoundException {
 	 	  this.filePaths = new ArrayList<>();
      	this.searchResults = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
-			this.isLoggedIn = false;
 	}
 
    public void addTable(String tableName)
    {
    		try
    		{
-   			File table = new File(tableName);
+   			File table = new File(tableName + ".tsv");
       		if (!table.exists())
       		{
          		table.createNewFile();
+
+         		eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATETABLE, staff.getId()));
       		}
    		}
    		catch (IOException e)
@@ -47,10 +47,12 @@ public class DataController {
    {
    		if (staff.getId() > 0) // -1 means not logged in, a boolean would be redundant
       	{
-      		File table = new File(tableName);
+      		File table = new File(tableName + ".tsv");
          	if (table.exists())
          	{
             	table.delete();
+
+            	eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETETABLE, staff.getId()));
          	}
       	}
       	else
@@ -66,8 +68,30 @@ public class DataController {
 	public void addLine(String line, String tableName) {
 		if (staff.getId() > 0)
 		{
+			try
+			{
+				File table = new File(tableName + ".tsv");
+				if (table.canWrite())
+				{
+					FileWriter fileWriter = new FileWriter(table, true);
+					BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+      				PrintWriter printWriter = new PrintWriter(bufferedWriter);
 
-			eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATE, staff.getId()));
+      				printWriter.println(line);
+      				printWriter.flush();
+      				printWriter.close();
+
+					eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATE, staff.getId()));
+				}
+				else
+				{
+					System.out.println("Cannot write to table: " + tableName);
+				}
+			}
+			catch (IOException e)
+			{
+				System.out.println(e);
+			}
 		}
 		else
 		{
@@ -85,7 +109,7 @@ public class DataController {
 
    		try
    		{
-			File table = new File(tableName);
+			File table = new File(tableName + ".tsv");
 
     		if (!table.canRead())
     		{
@@ -152,6 +176,10 @@ public class DataController {
 		throw new UnsupportedOperationException();
 	}
 
+	public EventLog getEventLogger() {
+		return eventLogger;
+	}
+
 	/**
 	 *
 	 * @param username
@@ -181,7 +209,6 @@ public class DataController {
 							staff = new StaffUser(id, userInfo[1], userInfo[2], userInfo[3], userInfo[4], userInfo[5], userInfo[6]);
 
 							System.out.println("\nSuccesfully logged in!");
-							isLoggedIn = true;
 
 							return true;
 						}
@@ -208,11 +235,10 @@ public class DataController {
 	}
 
 	public boolean getIsLoggedIn() {
-		return isLoggedIn;
+		return (staff.getId() > 0);
 	}
 
 	public void logOut() {
-		isLoggedIn = false;
 		staff = new StaffUser();
 	}
 

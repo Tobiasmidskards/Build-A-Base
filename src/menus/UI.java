@@ -1,6 +1,6 @@
 package menus;
 
-import dataController.*;
+import datacontroller.*;
 
 public class UI{
 
@@ -35,18 +35,33 @@ public class UI{
 
   public void SearchMenu(boolean loggedIn) {
     Top();
+
+    System.out.println("\nWhich type do you want to search for?\n");
+    System.out.println("1. Author");
+    System.out.println("2. Title");
+
     if (loggedIn) {
-      System.out.println("\nWhich type do you want to search for?\n");
-      System.out.println("1. Author");
-      System.out.println("2. Title");
-      System.out.println("3. Create");
-      System.out.println("4. Back");
+      System.out.println("3. Create/Read/Update/Delete");
+      System.out.println("4. Eventlog");
+      System.out.println("5. Back");
     } else {
-      System.out.println("\nWhich type do you want to search for?\n");
-      System.out.println("1. Author");
-      System.out.println("2. Title");
       System.out.println("3. Back");
     }
+
+    Bot();
+    input();
+  }
+
+  public void EventLogMenu()
+  {
+    Top();
+
+    System.out.println("\nWhich type do you want to search for?\n");
+    System.out.println("1. All events");
+    System.out.println("2. Specific eventType");
+    System.out.println("3. Specific id");
+    System.out.println("4. Back");
+
     Bot();
     input();
   }
