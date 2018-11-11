@@ -28,7 +28,7 @@ public class UI{
       System.out.println("\n1. Logout");
     }
     System.out.println("2. Search");
-    System.out.println("3. Exit");
+    System.out.println("\n3. Exit");
     Bot();
     input();
   }
@@ -49,6 +49,18 @@ public class UI{
       System.out.println("3. Back");
     }
 
+    Bot();
+    input();
+  }
+
+  public void ManagementMenu()
+  {
+    Top();
+    System.out.println("\nData management Menu\n");
+    System.out.println("1. Create");
+    System.out.println("2. Update");
+    System.out.println("3. Delete");
+    System.out.println("4. Back");
     Bot();
     input();
   }

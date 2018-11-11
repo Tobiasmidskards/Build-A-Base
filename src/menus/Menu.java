@@ -47,6 +47,9 @@ public class Menu {
 			case EVENTLOG:
 				displayEventLogMenu();
 				break;
+			case MANAGEMENT:
+				displayManagementMenu();
+				break;
 			case EXIT:
 			  ui.clear();
 				ui.exit();
@@ -175,6 +178,7 @@ public class Menu {
 					break;
 
 				case "3":
+					state = MenuState.MANAGEMENT;
 					break;
 
 				case "4":
@@ -210,6 +214,31 @@ public class Menu {
 					System.out.println("Try again please.");
 					break;
 			}
+		}
+	}
+
+	private void displayManagementMenu(){
+		ui.ManagementMenu();
+
+		input = scanner.nextLine();
+
+		switch (input)
+		{
+			case "1":
+
+				break;
+			case "2":
+
+				break;
+			case "3":
+
+				break;
+			case "4":
+				state = MenuState.SEARCH;
+				break;
+			default:
+				System.out.println("Try again please.");
+				break;
 		}
 	}
 
