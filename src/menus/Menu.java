@@ -138,14 +138,10 @@ public class Menu {
 
 				break;
 			case "3":
-				System.out.println("ID to search for");
+				System.out.println("\nID to search for");
 				ui.input();
 
-				while (scanner.hasNextInt())
-				{
-					displayElementsInEventList(dataController.getEventLogger().listEvents(scanner.nextInt()));
-					break;
-				}
+				displayElementsInEventList(dataController.getEventLogger().listEvents(scanner.nextInt()));
 				promptEnterMessage();
 				break;
 			case "4":
@@ -227,9 +223,11 @@ public class Menu {
 			case "1": //create table
 				if (command.length == 3) {
 					dataController.addTable(command[1], command[2].split(","));
+					System.out.printf("\nYou have created a new table '%s'\n", command[1]);
 				} else {
 					ui.invalidParameter();
 				}
+			  promptEnterMessage();
 				break;
 			case "2": //delete table
 				if (command.length == 2) {
@@ -237,6 +235,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "3": //add row
 				if (command.length == 3) {
@@ -244,6 +243,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "4": //read row
 				if (command.length == 3) {
@@ -254,6 +254,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "5": //update row
 				if (command.length == 4) {
@@ -261,6 +262,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "6": //delete row
 				if (command.length == 3) {
@@ -268,6 +270,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "7": //get table structure
 				if (command.length == 2) {
@@ -278,6 +281,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
+				promptEnterMessage();
 				break;
 			case "8":
 				state = MenuState.SEARCH;
@@ -286,8 +290,6 @@ public class Menu {
 				System.out.println("Try again please.");
 				break;
 		}
-
-		promptEnterMessage();
 	}
 
 	private void searchForPerson() {
@@ -354,6 +356,7 @@ public class Menu {
 	{
 		if (events.size() > 0)
 		{
+		System.out.println("");
 			for (Event event : events)
 			{
 				System.out.println(event);
@@ -361,12 +364,13 @@ public class Menu {
 		}
 		else
 		{
-			System.out.println("No events to display.");
+			System.out.println("\nNo events to display.");
 		}
 	}
 
 	private void promptEnterMessage()
 	{
+			scanner = new Scanner(System.in);
 			System.out.print("\nEnter anything to continue..");
 			scanner.nextLine();
 	}

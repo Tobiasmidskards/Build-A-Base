@@ -58,7 +58,7 @@ public class DataController {
          	if (table.exists())
          	{
             	table.delete();
-            	System.out.println("Table: '" + "' has been deleted.");
+            	System.out.println("\nTable: '" + tableName + "' has been deleted.");
             	eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETETABLE, staff.getId()));
          	}
       	}
@@ -67,6 +67,7 @@ public class DataController {
          	System.out.println("You must be logged in to perform this task.");
       	}
    }
+
 
 	/**
 	 *
@@ -79,13 +80,13 @@ public class DataController {
 			{
 				if (readTableColumns(tableName).length != columns.length)
 				{
-					System.out.println("Column structure does not match the selected table.");
+					System.out.println("\nColumn structure does not match the selected table.");
 					return;
 				}
 
 				if (primaryKeyExists(columns[0], tableName))
 				{
-					System.out.println("Primarykey already exists. Update the existing row instead.");
+					System.out.println("\nPrimarykey already exists. Update the existing row instead.");
 					return;
 				}
 			}
@@ -266,7 +267,7 @@ public class DataController {
 
 						rowDeleted = true;
 
-						System.out.println("Flagged row as removed with primary key: '" + primaryKey + "' in table: '" + tableName + "'");
+						System.out.println("\nFlagged row as removed with primary key: '" + primaryKey + "' in table: '" + tableName + "'");
 						eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETE, staff.getId()));
 					}
 					else

@@ -5,6 +5,7 @@ import datacontroller.*;
 public class UI{
 
   public UI(){
+
   }
 
   public void clear() {
@@ -58,7 +59,7 @@ public class UI{
     Top();
     System.out.println("\nDatabase management Menu\n");
     System.out.println("Type number and parameters to run command.");
-    System.out.println("Example: '1 newtable'");
+    System.out.println("Example: '1 newtable'\n");
     System.out.println("1. Create table [table name] [column1,column2,column3..]");
     System.out.println("2. Delete table [table name]");
     System.out.println("3. Create row [column1,column2,column3..] [table name]");
@@ -73,6 +74,7 @@ public class UI{
 
   public void printRowRead(String[] row)
   {
+    System.out.println("");
     for (int i = 0; i < row.length; i++)
     {
       System.out.print("[" + row[i] +"] ");
@@ -82,7 +84,7 @@ public class UI{
 
   public void invalidParameter()
   {
-    System.out.println("Invalid input...");
+    System.out.println("\nInvalid input...");
   }
 
   public void eventLogMenu()
