@@ -41,7 +41,8 @@ public class UI{
     System.out.println("2. Title");
 
     if (loggedIn) {
-      System.out.println("3. Create/Read/Update/Delete");
+      System.out.println("\nAs admin you can\n");
+      System.out.println("3. Data management");
       System.out.println("4. Eventlog");
       System.out.println("5. Back");
     } else {
