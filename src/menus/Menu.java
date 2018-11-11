@@ -222,16 +222,11 @@ public class Menu {
 		{
 			case "1": //create table
 				if (command.length == 3) {
-<<<<<<< HEAD
-					dataController.addTable(command[1], command[2].split(","));
-					System.out.printf("\nYou have created a new table '%s'\n", command[1]);
-=======
 					dataController.addTable(command[1], command[2].split("-"));
->>>>>>> 3d2207aa8d1cdd3a71fb3db45c5d29c966516a6d
 				} else {
 					ui.invalidParameter();
 				}
-			  promptEnterMessage();
+
 				break;
 			case "2": //delete table
 				if (command.length == 2) {
@@ -239,7 +234,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "3": //add row
 				if (command.length == 3) {
@@ -247,7 +242,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "4": //read row
 				if (command.length == 3) {
@@ -258,7 +253,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "5": //update row
 				if (command.length == 4) {
@@ -266,7 +261,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "6": //delete row
 				if (command.length == 3) {
@@ -274,7 +269,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "7": //get table structure
 				if (command.length == 2) {
@@ -285,7 +280,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
+				
 				break;
 			case "8":
 				state = MenuState.SEARCH;
