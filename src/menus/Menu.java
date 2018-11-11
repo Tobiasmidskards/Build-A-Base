@@ -288,6 +288,8 @@ public class Menu {
 			default:
 				System.out.println("Try again please.");
 				break;
+
+			promptEnterMessage();
 		}
 	}
 
