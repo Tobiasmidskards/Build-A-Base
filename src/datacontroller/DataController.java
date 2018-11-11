@@ -41,6 +41,7 @@ public class DataController {
          		printWriter.flush();
          		printWriter.close();
 
+         		System.out.printf("Added new table: '%s'\n", tableName);
          		eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATETABLE, staff.getId()));
       		}
    		}
@@ -58,7 +59,7 @@ public class DataController {
          	if (table.exists())
          	{
             	table.delete();
-            	System.out.println("Table: '" + "' has been deleted.");
+            	System.out.printf("Table: '%s' has been deleted.\n", tableName);
             	eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETETABLE, staff.getId()));
          	}
       	}
@@ -85,7 +86,7 @@ public class DataController {
 
 				if (primaryKeyExists(columns[0], tableName))
 				{
-					System.out.println("Primarykey already exists. Update the existing row instead.");
+					System.out.println("Primary key already exists. Update the existing row instead.");
 					return;
 				}
 			}
@@ -111,12 +112,12 @@ public class DataController {
       				bufferedWriter.close();
       				fileWriter.close();
 
-      				System.out.println("Row added to table: '" + tableName + "'");
+      				System.out.printf("Row added to table: '%s'\n", tableName);
 					eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATE, staff.getId()));
 				}
 				else
 				{
-					System.out.println("Cannot write to table: " + tableName);
+					System.out.printf("Cannot write to table: '%s'\n", tableName);
 				}
 			}
 			catch (IOException e)
@@ -213,7 +214,7 @@ public class DataController {
 
 			if (!primaryKeyExists(updatedRow[0], tableName))
 			{
-				System.out.println("Primary key does not exists. Add new row instead.");
+				System.out.println("Primary key does not exist. Add new row instead.");
 				return;
 			}
 
@@ -222,7 +223,7 @@ public class DataController {
 				removeRow(primaryKey, tableName); // run remove to flag existing row
 				addRow(updatedRow, tableName, false); // add new row as replacement
 
-				System.out.println("Updated row for table: '" + tableName + "' with primary key: '" + primaryKey + "'");
+				System.out.printf("Updated row for table: '%s' with primary key: '%s'\n", tableName, primaryKey);
 				eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.UPDATE, staff.getId()));
 			}
 			catch (Exception e)
@@ -261,12 +262,12 @@ public class DataController {
 					if (primaryKey.equals(row[0]))
 					{
 						raFile.seek(fileOffset);
-						raFile.writeBytes("\\N\t"); // 0 to represent removed
+						raFile.writeBytes("\\N\t"); // \N to represent removed
 						raFile.close(); //important in order to flush the stream
 
 						rowDeleted = true;
 
-						System.out.println("Flagged row as removed with primary key: '" + primaryKey + "' in table: '" + tableName + "'");
+						System.out.printf("Flagged row as removed with primary key: '%s' in table: '%s'\n", primaryKey, tableName);
 						eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETE, staff.getId()));
 					}
 					else
@@ -278,7 +279,7 @@ public class DataController {
 			}
 			else
 			{
-				System.out.println("Cannot write to table: '" + tableName + "'");
+				System.out.printf("Cannot write to table: '%s'\n", tableName);
 			}
 		}
 		catch (Exception e)
@@ -324,7 +325,7 @@ public class DataController {
 
     	if (!table.canRead())
     	{
-    		System.out.println("Cannot read from table: '" + tableName + "'");
+    		System.out.printf("Cannot read from table: '%s'\n", tableName);
     		table = null;
     	}
 
