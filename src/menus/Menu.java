@@ -226,7 +226,7 @@ public class Menu {
 		{
 			case "1": //create table
 				if (command.length == 3) {
-					dataController.addTable(command[1], command[2].split(","));
+					dataController.addTable(command[1], command[2].split("-"));
 				} else {
 					ui.invalidParameter();
 				}
@@ -240,7 +240,7 @@ public class Menu {
 				break;
 			case "3": //add row
 				if (command.length == 3) {
-					dataController.addRow(command[1].split(","), command[2], true);
+					dataController.addRow(command[1].split("-"), command[2], true);
 				} else {
 					ui.invalidParameter();
 				}
@@ -257,7 +257,7 @@ public class Menu {
 				break;
 			case "5": //update row
 				if (command.length == 4) {
-					dataController.updateRow(command[1], command[2].split(","), command[3]);
+					dataController.updateRow(command[1], command[2].split("-"), command[3]);
 				} else {
 					ui.invalidParameter();
 				}
