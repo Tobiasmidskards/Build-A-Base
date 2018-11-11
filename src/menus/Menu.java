@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
-import datacontroller.DataController;
+import datacontroller.*;
 import eventlog.Event;
 import search.SearchController;
 import database.Movie;
@@ -12,6 +12,7 @@ import database.Person;
 
 public class Menu {
 
+	private IndexMaker indexMaker;
 	private DataController dataController;
 	private SearchController searchController;
 	private Scanner scanner;
@@ -21,6 +22,7 @@ public class Menu {
 	private String input;
 
 	public Menu() throws FileNotFoundException{
+		this.indexMaker = new IndexMaker();
     	this.dataController = new DataController();
     	this.searchController = new SearchController();
 		this.scanner = new Scanner(System.in);
@@ -226,7 +228,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-
+                promptEnterMessage();
 				break;
 			case "2": //delete table
 				if (command.length == 2) {
@@ -234,7 +236,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "3": //add row
 				if (command.length == 3) {
@@ -242,7 +244,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "4": //read row
 				if (command.length == 3) {
@@ -253,7 +255,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "5": //update row
 				if (command.length == 4) {
@@ -261,7 +263,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "6": //delete row
 				if (command.length == 3) {
@@ -269,7 +271,7 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "7": //get table structure
 				if (command.length == 2) {
@@ -280,16 +282,16 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				
+				promptEnterMessage();
 				break;
 			case "8":
 				state = MenuState.SEARCH;
 				break;
 			default:
 				System.out.println("Try again please.");
+                promptEnterMessage();
 				break;
 
-			promptEnterMessage();
 		}
 	}
 
