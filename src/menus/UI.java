@@ -41,9 +41,9 @@ public class UI{
     System.out.println("2. Title");
 
     if (loggedIn) {
-      System.out.println("\nAs admin you can\n");
-      System.out.println("3. Data management");
-      System.out.println("4. Eventlog");
+      System.out.println("\nAs admin you can manage\n");
+      System.out.println("3. Database");
+      System.out.println("4. Eventlogs");
       System.out.println("5. Back");
     } else {
       System.out.println("3. Back");
@@ -56,16 +56,36 @@ public class UI{
   public void ManagementMenu()
   {
     Top();
-    System.out.println("\nData management Menu\n");
-    System.out.println("1. Create");
-    System.out.println("2. Update");
-    System.out.println("3. Delete");
-    System.out.println("4. Back");
+    System.out.println("\nDatabase management Menu\n");
+    System.out.println("Type number and parameters to run command.");
+    System.out.println("Example: '1 newtable'");
+    System.out.println("1. Create table [table name] [column1,column2,column3..]");
+    System.out.println("2. Delete table [table name]");
+    System.out.println("3. Create row [column1,column2,column3..] [table name]");
+    System.out.println("4. Read row [primary key] [table name]");
+    System.out.println("5. Update row [primary key] [column1,column2,column3..] [table name]");
+    System.out.println("6. Delete row [primary key] [table name]");
+    System.out.println("7. Get table structure [table name]");
+    System.out.println("8. Back");
     Bot();
     input();
   }
 
-  public void EventLogMenu()
+  public void printRowRead(String[] row)
+  {
+    for (int i = 0; i < row.length; i++)
+    {
+      System.out.print("[" + row[i] +"] ");
+    }
+    System.out.print("\n");
+  }
+
+  public void invalidParameter()
+  {
+    System.out.println("Invalid input...");
+  }
+
+  public void eventLogMenu()
   {
     Top();
 

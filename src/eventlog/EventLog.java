@@ -19,7 +19,7 @@ public class EventLog {
 		{
 			FileWriter logFile = new FileWriter(LOGFILE, true);
 			BufferedWriter bufferedWriter = new BufferedWriter(logFile);
-			PrintWriter printWriter = new PrintWriter(bufferedWriter);
+			printWriter = new PrintWriter(bufferedWriter);
 		}
 		catch (Exception e)
 		{

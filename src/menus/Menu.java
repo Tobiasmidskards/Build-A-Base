@@ -124,7 +124,7 @@ public class Menu {
 	}
 
 	public void displayEventLogMenu() {
-		ui.EventLogMenu();
+		ui.eventLogMenu();
 
 		input = scanner.nextLine();
 
@@ -220,26 +220,74 @@ public class Menu {
 	private void displayManagementMenu(){
 		ui.ManagementMenu();
 
-		input = scanner.nextLine();
+		String[] command = scanner.nextLine().split(" ");
 
-		switch (input)
+		switch (command[0])
 		{
-			case "1":
-
+			case "1": //create table
+				if (command.length == 3) {
+					dataController.addTable(command[1], command[2].split(","));
+				} else {
+					ui.invalidParameter();
+				}
 				break;
-			case "2":
-
+			case "2": //delete table
+				if (command.length == 2) {
+					dataController.removeTable(command[1]);
+				} else {
+					ui.invalidParameter();
+				}
 				break;
-			case "3":
-
+			case "3": //add row
+				if (command.length == 3) {
+					dataController.addRow(command[1].split(","), command[2], true);
+				} else {
+					ui.invalidParameter();
+				}
 				break;
-			case "4":
+			case "4": //read row
+				if (command.length == 3) {
+					String[] row = dataController.readRow(command[1], command[2]);
+					if (row != null) {
+						ui.printRowRead(row);
+					}
+				} else {
+					ui.invalidParameter();
+				}
+				break;
+			case "5": //update row
+				if (command.length == 4) {
+					dataController.updateRow(command[1], command[2].split(","), command[3]);
+				} else {
+					ui.invalidParameter();
+				}
+				break;
+			case "6": //delete row
+				if (command.length == 3) {
+					dataController.removeRow(command[1], command[2]);
+				} else {
+					ui.invalidParameter();
+				}
+				break;
+			case "7": //get table structure
+				if (command.length == 2) {
+					String[] rowStructure = dataController.readTableColumns(command[1]);
+					if (rowStructure != null) {
+						ui.printRowRead(rowStructure);
+					}
+				} else {
+					ui.invalidParameter();
+				}
+				break;
+			case "8":
 				state = MenuState.SEARCH;
 				break;
 			default:
 				System.out.println("Try again please.");
 				break;
 		}
+
+		promptEnterMessage();
 	}
 
 	private void searchForPerson() {
@@ -263,8 +311,8 @@ public class Menu {
 
 			for (Person p : persons)
 			{
-				System.out.printf("\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
-												 p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
+				System.out.printf("\nnconst:\t\t\t%s\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
+												 p.getNconst(), p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
 			}
 		}
 
@@ -293,8 +341,8 @@ public class Menu {
 
 			for (Movie m : movies)
 			{
-				System.out.printf("\nTitle type:\t\t\t%s\nPrimary Title:\t\t\t%s\nOriginal Title:\t\t\t%s\nIs adult:\t\t\t%s\nYear:\t\t\t\t%s\nRuntime:\t\t\t%s\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
-												m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
+				System.out.printf("\ntconst:\t\t\t%s\nTitle type:\t\t\t%s\nPrimary Title:\t\t\t%s\nOriginal Title:\t\t\t%s\nIs adult:\t\t\t%s\nYear:\t\t\t\t%s\nRuntime:\t\t\t%s\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
+												m.getTconst(), m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
 			}
 		}
 

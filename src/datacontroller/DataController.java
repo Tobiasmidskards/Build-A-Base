@@ -13,17 +13,15 @@ import java.io.*;
 public class DataController {
 
 	private Scanner fileScanner;
-	private List<String> filePaths;
 	private EventLog eventLogger;
 	private StaffUser staff;
 
 	public DataController() throws FileNotFoundException {
-		this.filePaths = new ArrayList<>();
      	this.eventLogger = new EventLog();
      	this.staff = new StaffUser();
 	}
 
-   public void addTable(String tableName)
+   public void addTable(String tableName, String[] columns)
    {
    		try
    		{
@@ -31,6 +29,17 @@ public class DataController {
       		if (!table.exists())
       		{
          		table.createNewFile();
+
+         		String firstLine = columns[0]; //write the firstline as a row
+         		for (int i = 1; i < columns.length; i++)
+         		{
+         			firstLine += "\t" + columns[i];
+         		}
+
+         		PrintWriter printWriter = new PrintWriter(table);
+         		printWriter.println(firstLine);
+         		printWriter.flush();
+         		printWriter.close();
 
          		eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATETABLE, staff.getId()));
       		}
@@ -49,7 +58,7 @@ public class DataController {
          	if (table.exists())
          	{
             	table.delete();
-
+            	System.out.println("Table: '" + "' has been deleted.");
             	eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETETABLE, staff.getId()));
          	}
       	}
@@ -63,9 +72,24 @@ public class DataController {
 	 *
 	 * @param index
 	 */
-	public void addLine(String line, String tableName) {
+	public void addRow(String[] columns, String tableName, boolean runCheck) {
 		if (staff.getId() > 0)
 		{
+			if (runCheck) // running check is not needed when calling this method from updateRow
+			{
+				if (readTableColumns(tableName).length != columns.length)
+				{
+					System.out.println("Column structure does not match the selected table.");
+					return;
+				}
+
+				if (primaryKeyExists(columns[0], tableName))
+				{
+					System.out.println("Primarykey already exists. Update the existing row instead.");
+					return;
+				}
+			}
+
 			try
 			{
 				File table = new File("resources/" + tableName + ".tsv");
@@ -75,10 +99,19 @@ public class DataController {
 					BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
       				PrintWriter printWriter = new PrintWriter(bufferedWriter);
 
-      				printWriter.println(line);
+      				printWriter.println();
+      				printWriter.print(columns[0]);
+      				for (int i = 1; i < columns.length; i++)
+      				{
+      					printWriter.print("\t" + columns[i]);
+      				}
+
       				printWriter.flush();
       				printWriter.close();
+      				bufferedWriter.close();
+      				fileWriter.close();
 
+      				System.out.println("Row added to table: '" + tableName + "'");
 					eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.CREATE, staff.getId()));
 				}
 				else
@@ -101,34 +134,22 @@ public class DataController {
 	 *
 	 * @param index
 	 */
-	public String[] readLine(int index, String tableName)
+	public String[] readTableColumns(String tableName) //reads first row to get structure of columns
 	{
-		String[] entry = null;
+		String[] columns = null;
 
    		try
    		{
-			File table = new File("resources/" + tableName + ".tsv");
+			File table = getTable(tableName);
 
-    		if (!table.canRead())
-    		{
-    			System.out.println("Cannot read from table: '" + tableName + "'");
-    		}
-    		else
+    		if (table != null)
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 
-    			for (int i = 0; i < index; i++)
-    			{
-            		if (fileScanner.hasNextLine())
-            		{
-               			entry = fileScanner.nextLine().split("\t");
-            		}
-            		else
-            		{
-               			System.out.println("Line does not exist. Lines read before stopping: " + i);
-               			entry = null;
-            		}
-        		}
+    			if (fileScanner.hasNextLine())
+            	{
+               		columns = fileScanner.nextLine().split("\t");
+            	}
     		}
     	}
     	catch (IOException e)
@@ -136,22 +157,18 @@ public class DataController {
     		System.out.println(e);
     	}
 
-    	return entry;
+    	return columns;
 	}
 
-	public String[] readLine(String primaryKey, String tableName)
+	public String[] readRow(String primaryKey, String tableName) //read specific row with primary key
 	{
 		String[] entry = null;
 
    		try
    		{
-			File table = new File("resources/" + tableName + ".tsv");
+			File table = getTable(tableName);
 
-    		if (!table.canRead())
-    		{
-    			System.out.println("Cannot read from table: '" + tableName + "'");
-    		}
-    		else
+    		if (table != null)
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 
@@ -185,17 +202,133 @@ public class DataController {
 	 *
 	 * @param index
 	 */
-	public void updateLine(int index, String updatedEntry, String tableName) {
-		// TODO - implement DataController.updateEntry
-		throw new UnsupportedOperationException();
+	public void updateRow(String primaryKey, String[] updatedRow, String tableName) {
+		if (staff.getId() > 0)
+		{
+			if (readTableColumns(tableName).length != updatedRow.length)
+			{
+				System.out.println("Column structure does not match the selected table.");
+				return;
+			}
+
+			if (!primaryKeyExists(updatedRow[0], tableName))
+			{
+				System.out.println("Primary key does not exists. Add new row instead.");
+				return;
+			}
+
+			try
+			{
+				removeRow(primaryKey, tableName); // run remove to flag existing row
+				addRow(updatedRow, tableName, false); // add new row as replacement
+
+				System.out.println("Updated row for table: '" + tableName + "' with primary key: '" + primaryKey + "'");
+				eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.UPDATE, staff.getId()));
+			}
+			catch (Exception e)
+			{
+				System.out.println(e);
+			}
+		}
+		else
+		{
+			System.out.println("Login is required to perform this task.");
+		}
 	}
 
 	/**
 	 *
 	 * @param index
 	 */
-	public void removeLine(int index) {
+	public void removeRow(String primaryKey, String tableName) {
+		try
+		{
+			File table = new File("resources/" + tableName + ".tsv");
 
+			if (table.canWrite())
+			{
+				boolean rowDeleted = false;
+				RandomAccessFile raFile = new RandomAccessFile(table, "rw"); // rw = read/write
+				String lineRead = "";
+				String[] row;
+				long fileOffset = 0;
+
+				raFile.seek(fileOffset);
+				lineRead = raFile.readLine();
+				while (lineRead != null && !rowDeleted)
+				{
+					row = lineRead.split("\t");
+					if (primaryKey.equals(row[0]))
+					{
+						raFile.seek(fileOffset);
+						raFile.writeBytes("\\N\t"); // 0 to represent removed
+						raFile.close(); //important in order to flush the stream
+
+						rowDeleted = true;
+
+						System.out.println("Flagged row as removed with primary key: '" + primaryKey + "' in table: '" + tableName + "'");
+						eventLogger.addEvent(new Event(LocalDateTime.now(), tableName, EventType.DELETE, staff.getId()));
+					}
+					else
+					{
+						fileOffset = raFile.getFilePointer(); // save previous offset to point back to start of line we just read
+						lineRead = raFile.readLine();
+					}
+				}
+			}
+			else
+			{
+				System.out.println("Cannot write to table: '" + tableName + "'");
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+
+	public boolean primaryKeyExists(String primaryKey, String tableName)
+	{
+		try
+   		{
+   			String[] row;
+			File table = getTable(tableName);
+
+    		if (table != null)
+    		{
+    			fileScanner = new Scanner(table, "UTF-8");
+
+    			while (fileScanner.hasNextLine())
+    			{
+    				row = fileScanner.nextLine().split("\t");
+    				if (primaryKey.equals(row[0]))
+    				{
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	catch (IOException e)
+    	{
+    		System.out.println(e);
+    	}
+
+    	return false;
+	}
+
+	public File getTable(String tableName)
+	{
+		File table = null;
+
+		table = new File("resources/" + tableName + ".tsv");
+
+    	if (!table.canRead())
+    	{
+    		System.out.println("Cannot read from table: '" + tableName + "'");
+    		table = null;
+    	}
+
+    	return table;
 	}
 
 
