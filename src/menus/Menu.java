@@ -234,8 +234,8 @@ public class Menu {
 
 			for (Person p : persons)
 			{
-				System.out.printf("nconst:\t\t\t%s\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
-												p.getNconst(), p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
+				System.out.printf("\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
+												 p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
 			}
 		}
 
@@ -264,8 +264,8 @@ public class Menu {
 
 			for (Movie m : movies)
 			{
-				System.out.printf("\ntconst:\t\t\t\t%s\nTitle type:\t\t\t%s\nPrimary Title:\t\t%s\nOriginal Title:\t%s\nIs adult:\t\t\t%s\nStart year:\t\t\t%s\nEnd year:\t\t\t%s\nRuntime:\t\t\t\t%s minutes\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
-												m.getTconst(), m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getEndYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
+				System.out.printf("\nTitle type:\t\t\t%s\nPrimary Title:\t\t\t%s\nOriginal Title:\t\t\t%s\nIs adult:\t\t\t%s\nYear:\t\t\t\t%s\nRuntime:\t\t\t%s\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
+												m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
 			}
 		}
 

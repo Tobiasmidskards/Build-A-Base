@@ -115,10 +115,10 @@ public class SearchController
 		// lookup titles from tconst.
 		// Find titles in titlebasics.txt
 		// show line[2] for primarytitle
-		
+
 		int maxResults = 5;
 		String[] entry;
-		List<Person> persons = new ArrayList<>();		
+		List<Person> persons = new ArrayList<>();
 		String[] movies;
 
    		try
@@ -132,25 +132,27 @@ public class SearchController
     		else
     		{
     			fileScanner = new Scanner(table, "UTF-8");
-				
+
 				while (fileScanner.hasNextLine() && persons.size() < maxResults)
 				{
              		entry = fileScanner.nextLine().split("\t");
-						
+
 					if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
 					{
-						/*
-						result[0] = entry[0]; // nconst
-						result[1] = entry[1]; // PrimaryName
-						result[2] = entry[2]; // Birth
-						result[3] = entry[3]; // Death
-						result[4] = entry[4].replace(",", ", "); // Profession
-						result[5] = "";*/
+
+						// result[0] = entry[0]; // nconst
+						// result[1] = entry[1]; // PrimaryName
+						// result[2] = entry[2]; // Birth
+						// result[3] = entry[3]; // Death
+
+						// result[5] = "";
 
 						if (entry[3].contains("\\N"))
 						{
 							entry[3] = "-";
 						}
+
+						entry[4] = entry[4].replace(",", ", "); // Profession
 
 						movies = entry[5].split(","); // Movie Titles
 						String titles = "";
@@ -192,11 +194,11 @@ public class SearchController
     		else
     		{
     			fileScanner = new Scanner(table, "UTF-8");
-				
+
 				while (fileScanner.hasNextLine() && movies.size() < maxResults)
 				{
              		entry = fileScanner.nextLine().split("\t");
-						
+
 					if (title.toLowerCase().equals(entry[2].toLowerCase()) && entry[1].toLowerCase().equals("movie")) //make case insensitive to help.. also check both primary and original title
 					{
 							/*
@@ -223,6 +225,13 @@ public class SearchController
 						if (entry[6].contains("\\N")) //replace \N with -
 						{
 							entry[6] = "-";
+						}
+
+						if (entry[7].contains("\\N")) //replace \N with -
+						{
+							entry[7] = "-";
+						} else {
+							entry[7] = entry[7] + " minutes";
 						}
 
 						entry[8] = entry[8].replace(",", ", ");
