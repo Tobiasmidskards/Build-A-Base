@@ -178,7 +178,7 @@ public class SearchController
 
 	public List<Movie> searchTitle(String title)
 	{
-		int maxResults = 10;
+		int maxResults = 3;
 		String[] entry;
 		List<Movie> movies = new ArrayList<>();
 		boolean searchFinished = false;
@@ -199,7 +199,7 @@ public class SearchController
 				{
              		entry = fileScanner.nextLine().split("\t");
 
-					if (title.toLowerCase().equals(entry[2].toLowerCase()) && entry[1].toLowerCase().equals("movie")) //make case insensitive to help.. also check both primary and original title
+					if (title.toLowerCase().equals(entry[2].toLowerCase())) //make case insensitive to help
 					{
 							/*
 							entry[0]; // tconst
