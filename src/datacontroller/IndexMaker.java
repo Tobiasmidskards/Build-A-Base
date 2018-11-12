@@ -6,10 +6,9 @@ public class IndexMaker
 {
 	public IndexMaker()
 	{
-		
 	}
 
-	public void CreateIndex(int columnToIndex, String tableName)
+	public void CreateIndex(String filter, int filterIndex, String tableName, int columnToIndex)
 	{
 		try
 		{
@@ -38,8 +37,11 @@ public class IndexMaker
 			while (lineRead != null)
 			{
 				row = lineRead.split("\t");
-				printWriter.println(offset + "\t" + row[columnToIndex].toLowerCase());
-				printWriter.flush();
+				if (row[filterIndex].equals(filter))
+				{
+					printWriter.println(offset + "\t" + row[columnToIndex].toLowerCase());
+					printWriter.flush();
+				}
 
 				offset = randomAccessFile.getFilePointer();
 				lineRead = randomAccessFile.readLine();

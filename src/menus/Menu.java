@@ -167,12 +167,14 @@ public class Menu {
 			// if logged in.
 			switch(input)
 			{
-				case "1":
+				case "0":
 					searchForPerson();
 					break;
-
+				case "1":
+					searchForTitle(false);
+					break;
 				case "2":
-					searchForTitle();
+					searchForTitle(true);
 					break;
 
 				case "3":
@@ -197,11 +199,14 @@ public class Menu {
 			// if not logged in.
 			switch(input)
 			{
-				case "1":
+				case "0":
 					searchForPerson();
 					break;
+				case "1":
+					searchForTitle(false);
+					break;
 				case "2":
-					searchForTitle();
+					searchForTitle(true);
 					break;
 
 				case "3":
@@ -285,6 +290,9 @@ public class Menu {
 				promptEnterMessage();
 				break;
 			case "8":
+
+				break;
+			case "9":
 				state = MenuState.SEARCH;
 				break;
 			default:
@@ -325,7 +333,7 @@ public class Menu {
 		promptEnterMessage();
 	}
 
-	private void searchForTitle() {
+	private void searchForTitle(boolean useIndexTable) {
 		System.out.println("\nPlease type in the title you want to search for.");
 		ui.input();
 
@@ -333,7 +341,7 @@ public class Menu {
 
 		System.out.println("\nReading from database.. This might take a while...");
 
-		List<Movie> movies = searchController.searchTitle(input);
+		List<Movie> movies = searchController.searchTitle(input, useIndexTable);
 
 		System.out.println("\nYou have searched for: " + input);
 

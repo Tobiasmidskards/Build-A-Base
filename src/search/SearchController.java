@@ -177,9 +177,8 @@ public class SearchController
 		return persons;
 	}
 
-	public List<Movie> searchTitle(String title)
+	public List<Movie> searchTitle(String title, boolean useIndexTable)
 	{
-		int maxResults = 5;
 		String[] entry;
 		List<Movie> movies = new ArrayList<>();
 		boolean searchFinished = false;
@@ -195,14 +194,73 @@ public class SearchController
     		}
     		else
     		{
-    			fileScanner = new Scanner(table, "UTF-8");
+    			if (useIndexTable)
+    			{
+    				File indexTable = new File("resources/titlebasics.index.tsv");
+    				if (indexTable.canRead())
+    				{
+    					fileScanner = new Scanner(indexTable, "UTF-8");
+    					RandomAccessFile tableFile = new RandomAccessFile(table, "r");
+    					String[] lineRead;
+    					int offset = 0;
 
-				while (fileScanner.hasNextLine() && movies.size() < maxResults)
-				{
-             		entry = fileScanner.nextLine().split("\t");
+    					while (fileScanner.hasNextLine())
+    					{
+    						lineRead = fileScanner.nextLine().split("\t");
+    						if (lineRead.length == 2)
+    						{
+    						if (lineRead[1].equals(title))
+    						{
+    							offset = Integer.parseInt(lineRead[0]);
+    							tableFile.seek(offset);
+    							entry = tableFile.readLine().split("\t");
 
-					if (title.equals(entry[2].toLowerCase()) && entry[1].equals("movie")) //make case insensitive to help
+    							if (entry[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
+								{
+									entry[4] = "No";
+								}
+								else
+								{
+									entry[4] = "Yes";
+								}
+
+								if (entry[6].contains("\\N")) //replace \N with -
+								{
+									entry[6] = "-";
+								}
+
+								if (entry[7].contains("\\N")) //replace \N with -
+								{
+									entry[7] = "-";
+								} else {
+									entry[7] = entry[7] + " minutes";
+								}
+
+								entry[8] = entry[8].replace(",", ", ");
+
+								String[] ratingAndVote = getRatingAndVotes(entry[0]);
+
+								movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+    						}
+    					}
+    					}
+
+    				}
+    				else
+    				{
+    					System.out.println("Cannot read index table. Try again or use regular search without index table.");
+    				}
+    			}
+    			else
+    			{
+    				fileScanner = new Scanner(table, "UTF-8");
+
+					while (fileScanner.hasNextLine())
 					{
+             			entry = fileScanner.nextLine().split("\t");
+
+						if (title.equals(entry[2].toLowerCase())) //make case insensitive to help
+						{
 							/*
 							entry[0]; // tconst
 							entry[1]; // titleType
@@ -215,33 +273,34 @@ public class SearchController
 							entry[8]; // genres
 							*/
 
-						if (entry[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
-						{
-							entry[4] = "No";
-						}
-						else
-						{
-							entry[4] = "Yes";
-						}
+							if (entry[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
+							{
+								entry[4] = "No";
+							}
+							else
+							{
+								entry[4] = "Yes";
+							}
 
-						if (entry[6].contains("\\N")) //replace \N with -
-						{
-							entry[6] = "-";
-						}
+							if (entry[6].contains("\\N")) //replace \N with -
+							{
+								entry[6] = "-";
+							}
 
-						if (entry[7].contains("\\N")) //replace \N with -
-						{
-							entry[7] = "-";
-						} else {
-							entry[7] = entry[7] + " minutes";
-						}
+							if (entry[7].contains("\\N")) //replace \N with -
+							{
+								entry[7] = "-";
+							} else {
+								entry[7] = entry[7] + " minutes";
+							}
 
-						entry[8] = entry[8].replace(",", ", ");
+							entry[8] = entry[8].replace(",", ", ");
 
-						String[] ratingAndVote = getRatingAndVotes(entry[0]);
+							String[] ratingAndVote = getRatingAndVotes(entry[0]);
 
-						movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
-        			}
+							movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+        				}
+					}
 				}
     		}
     	}

@@ -38,8 +38,9 @@ public class UI{
     Top();
 
     System.out.println("\nWhich type do you want to search for?\n");
-    System.out.println("1. Person");
-    System.out.println("2. Title");
+    System.out.println("0. Person");
+    System.out.println("1. Title");
+    System.out.println("2. Title (with index enabled)");
 
     if (loggedIn) {
       System.out.println("\nAs admin you can manage\n");
@@ -67,7 +68,8 @@ public class UI{
     System.out.println("5. Update row [primary key] [column1-column2-column3..] [table name]");
     System.out.println("6. Delete row [primary key] [table name]");
     System.out.println("7. Get table structure [table name]");
-    System.out.println("8. Back");
+    System.out.println("8. Create index table [filter] [column number] [table name] [column to index]");
+    System.out.println("9. Back");
     Bot();
     input();
   }
