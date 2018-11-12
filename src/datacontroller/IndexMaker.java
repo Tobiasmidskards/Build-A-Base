@@ -30,7 +30,7 @@ public class IndexMaker
 			indexedFile.createNewFile();
 
 			RandomAccessFile randomAccessFile = new RandomAccessFile(table, "r");
-			PrintWriter printWriter = new PrintWriter(indexedFile);
+			PrintWriter printWriter = new PrintWriter(indexedFile, "UTF-8");
 			long offset = 0;
 			String[] row;
 			String lineRead = randomAccessFile.readLine();
@@ -38,7 +38,7 @@ public class IndexMaker
 			while (lineRead != null)
 			{
 				row = lineRead.split("\t");
-				printWriter.println(offset + "\t" + row[columnToIndex]);
+				printWriter.println(offset + "\t" + row[columnToIndex].toLowerCase());
 				printWriter.flush();
 
 				offset = randomAccessFile.getFilePointer();

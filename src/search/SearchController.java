@@ -120,6 +120,7 @@ public class SearchController
 		String[] entry;
 		List<Person> persons = new ArrayList<>();
 		String[] movies;
+		name = name.toLowerCase();
 
    		try
    		{
@@ -137,7 +138,7 @@ public class SearchController
 				{
              		entry = fileScanner.nextLine().split("\t");
 
-					if (name.toLowerCase().equals(entry[1].toLowerCase())) //make case insensitive to help
+					if (name.equals(entry[1].toLowerCase())) //make case insensitive to help
 					{
 
 						// result[0] = entry[0]; // nconst
@@ -178,10 +179,11 @@ public class SearchController
 
 	public List<Movie> searchTitle(String title)
 	{
-		int maxResults = 3;
+		int maxResults = 5;
 		String[] entry;
 		List<Movie> movies = new ArrayList<>();
 		boolean searchFinished = false;
+		title = title.toLowerCase();
 
    		try
    		{
@@ -199,7 +201,7 @@ public class SearchController
 				{
              		entry = fileScanner.nextLine().split("\t");
 
-					if (title.toLowerCase().equals(entry[2].toLowerCase())) //make case insensitive to help
+					if (title.equals(entry[2].toLowerCase()) && entry[1].equals("movie")) //make case insensitive to help
 					{
 							/*
 							entry[0]; // tconst
