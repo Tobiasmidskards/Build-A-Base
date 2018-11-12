@@ -116,7 +116,6 @@ public class SearchController
 		// Find titles in titlebasics.txt
 		// show line[2] for primarytitle
 
-		int maxResults = 5;
 		String[] entry;
 		List<Person> persons = new ArrayList<>();
 		String[] movies;
@@ -134,7 +133,7 @@ public class SearchController
     		{
     			fileScanner = new Scanner(table, "UTF-8");
 
-				while (fileScanner.hasNextLine() && persons.size() < maxResults)
+				while (fileScanner.hasNextLine())
 				{
              		entry = fileScanner.nextLine().split("\t");
 
