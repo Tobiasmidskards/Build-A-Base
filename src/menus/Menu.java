@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
 import datacontroller.*;
-import eventlog.Event;
+import eventlog.*;
 import search.SearchController;
 import database.Movie;
 import database.Person;
@@ -46,6 +46,9 @@ public class Menu {
 				break;
 			case EVENTLOG:
 				displayEventLogMenu();
+				break;
+			case EVENTTYPE:
+				displayEventTypeSelectionMenu();
 				break;
 			case MANAGEMENT:
 				displayManagementMenu();
@@ -135,10 +138,10 @@ public class Menu {
 				promptEnterMessage();
 				break;
 			case "2":
-
+				state = MenuState.EVENTTYPE;
 				break;
 			case "3":
-				System.out.println("\nID to search for");
+				System.out.println("\nID to search for\n");
 				ui.input();
 
 				displayElementsInEventList(dataController.getEventLogger().listEvents(scanner.nextInt()));
@@ -152,6 +155,39 @@ public class Menu {
 				break;
 		}
 
+	}
+
+	public void displayEventTypeSelectionMenu() {
+		ui.specificEventTypeMenu();
+
+		input = scanner.nextLine();
+
+		switch (input)
+		{
+			case "1":
+				displayElementsInEventList(dataController.getEventLogger().listEvents(EventType.CREATETABLE));
+				break;
+			case "2":
+				displayElementsInEventList(dataController.getEventLogger().listEvents(EventType.DELETETABLE));
+				break;
+			case "3":
+				displayElementsInEventList(dataController.getEventLogger().listEvents(EventType.CREATE));
+				break;
+			case "4":
+				displayElementsInEventList(dataController.getEventLogger().listEvents(EventType.UPDATE));
+				break;
+			case "5":
+				displayElementsInEventList(dataController.getEventLogger().listEvents(EventType.DELETE));
+				break;
+			case "6":
+				state = MenuState.EVENTLOG;
+				break;
+			default:
+				System.out.println("Try again please.");
+				break;
+		}
+
+		promptEnterMessage();
 	}
 
 	public void displayDBLookupMenu() {
@@ -231,7 +267,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-                promptEnterMessage();
 				break;
 			case "2": //delete table
 				if (command.length == 2) {
@@ -239,7 +274,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "3": //add row
 				if (command.length == 3) {
@@ -247,7 +281,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "4": //read row
 				if (command.length == 3) {
@@ -258,7 +291,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "5": //update row
 				if (command.length == 4) {
@@ -266,7 +298,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "6": //delete row
 				if (command.length == 3) {
@@ -274,7 +305,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "7": //get table structure
 				if (command.length == 2) {
@@ -285,7 +315,6 @@ public class Menu {
 				} else {
 					ui.invalidParameter();
 				}
-				promptEnterMessage();
 				break;
 			case "8":
 				searchController.createIndexTable("movie", 1, "titlebasics", 2);
@@ -295,10 +324,11 @@ public class Menu {
 				break;
 			default:
 				System.out.println("Try again please.");
-                promptEnterMessage();
 				break;
 
 		}
+
+		promptEnterMessage();
 	}
 
 	private void searchForPerson() {

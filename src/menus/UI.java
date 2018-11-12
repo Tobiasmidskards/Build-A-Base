@@ -40,7 +40,7 @@ public class UI{
     System.out.println("\nWhich type do you want to search for?\n");
     System.out.println("0. Person");
     System.out.println("1. Title");
-    System.out.println("2. Title (with index enabled)");
+    System.out.println("2. Movie title (with index enabled)");
 
     if (loggedIn) {
       System.out.println("\nAs admin you can manage\n");
@@ -98,6 +98,21 @@ public class UI{
     System.out.println("2. Specific eventType");
     System.out.println("3. Specific id");
     System.out.println("4. Back");
+
+    Bot();
+    input();
+  }
+
+  public void specificEventTypeMenu() {
+    Top();
+
+    System.out.println("\nEvent type selection\n");
+    System.out.println("1. Create table");
+    System.out.println("2. Delete table");
+    System.out.println("3. Create row");
+    System.out.println("4. Update row");
+    System.out.println("5. Delete row");
+    System.out.println("6. Back");
 
     Bot();
     input();
