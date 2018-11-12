@@ -68,7 +68,7 @@ public class UI{
     System.out.println("5. Update row [primary key] [column1-column2-column3..] [table name]");
     System.out.println("6. Delete row [primary key] [table name]");
     System.out.println("7. Get table structure [table name]");
-    System.out.println("8. Create index table [filter] [column number] [table name] [column to index]");
+    System.out.println("8. Create new index table for 'titlebasics' with only 'movies' as titleType");
     System.out.println("9. Back");
     Bot();
     input();

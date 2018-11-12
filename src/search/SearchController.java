@@ -209,42 +209,37 @@ public class SearchController
     						lineRead = fileScanner.nextLine().split("\t");
     						if (lineRead.length == 2)
     						{
-    						if (lineRead[1].equals(title))
-    						{
-    							offset = Integer.parseInt(lineRead[0]);
-    							tableFile.seek(offset);
-    							entry = tableFile.readLine().split("\t");
+    							if (lineRead[1].equals(title))
+    							{
+    								offset = Integer.parseInt(lineRead[0]);
+    								tableFile.seek(offset);
+    								entry = tableFile.readLine().split("\t");
 
-    							if (entry[4].equals("0")) //translate 0/1 to yes/no in terms of "isAdult"
-								{
-									entry[4] = "No";
-								}
-								else
-								{
-									entry[4] = "Yes";
-								}
+    								if (entry[4].equals("0")) { //translate 0/1 to yes/no in terms of "isAdult"
+										entry[4] = "No";
+									}
+									else {
+										entry[4] = "Yes";
+									}
 
-								if (entry[6].contains("\\N")) //replace \N with -
-								{
-									entry[6] = "-";
-								}
+									if (entry[6].contains("\\N")) { //replace \N with -
+										entry[6] = "-";
+									}
 
-								if (entry[7].contains("\\N")) //replace \N with -
-								{
-									entry[7] = "-";
-								} else {
-									entry[7] = entry[7] + " minutes";
-								}
+									if (entry[7].contains("\\N")) { //replace \N with -
+										entry[7] = "-";
+									} else {
+										entry[7] = entry[7] + " minutes";
+									}
 
-								entry[8] = entry[8].replace(",", ", ");
+									entry[8] = entry[8].replace(",", ", ");
 
-								String[] ratingAndVote = getRatingAndVotes(entry[0]);
+									String[] ratingAndVote = getRatingAndVotes(entry[0]);
 
-								movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+									movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+    							}
     						}
     					}
-    					}
-
     				}
     				else
     				{
@@ -310,5 +305,56 @@ public class SearchController
     	}
 
 		return movies;
+	}
+
+	public void createIndexTable(String filter, int filterIndex, String tableName, int columnToIndex)
+	{
+		try
+		{
+			File table = new File("resources/" + tableName + ".tsv");
+			File indexedFile = new File("resources/" + tableName + ".index.tsv");
+
+			if (!table.canRead())
+			{
+				System.out.printf("Creation of index table failed because table could not be read: '%s'\n", tableName);
+				return;
+			}
+
+			if (indexedFile.exists()) //always remove old and possibly outdated index table
+			{
+				indexedFile.delete();
+			}
+
+			indexedFile.createNewFile();
+
+			System.out.println("\nCreating index table.. This will take a while...");
+
+			RandomAccessFile randomAccessFile = new RandomAccessFile(table, "r");
+			PrintWriter printWriter = new PrintWriter(indexedFile, "UTF-8");
+			long offset = 0;
+			String[] row;
+			String lineRead = randomAccessFile.readLine();
+
+			while (lineRead != null)
+			{
+				row = lineRead.split("\t");
+				if (row[filterIndex].equals(filter))
+				{
+					printWriter.println(offset + "\t" + row[columnToIndex].toLowerCase());
+					printWriter.flush();
+				}
+
+				offset = randomAccessFile.getFilePointer();
+				lineRead = randomAccessFile.readLine();
+			}
+
+			randomAccessFile.close();
+			printWriter.close();
+
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
 	}
 }

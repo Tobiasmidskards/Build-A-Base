@@ -12,7 +12,6 @@ import database.Person;
 
 public class Menu {
 
-	private IndexMaker indexMaker;
 	private DataController dataController;
 	private SearchController searchController;
 	private Scanner scanner;
@@ -22,7 +21,6 @@ public class Menu {
 	private String input;
 
 	public Menu() throws FileNotFoundException{
-		this.indexMaker = new IndexMaker();
     	this.dataController = new DataController();
     	this.searchController = new SearchController();
 		this.scanner = new Scanner(System.in);
@@ -290,7 +288,7 @@ public class Menu {
 				promptEnterMessage();
 				break;
 			case "8":
-
+				searchController.createIndexTable("movie", 1, "titlebasics", 2);
 				break;
 			case "9":
 				state = MenuState.SEARCH;
