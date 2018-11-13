@@ -328,7 +328,9 @@ public class Menu {
 
 		}
 
-		promptEnterMessage();
+		if (!command[0].equals("9")) {
+			promptEnterMessage();
+		}
 	}
 
 	private void searchForPerson() {
