@@ -1,1 +1,2 @@
 1	fornavn	efternavn	email@gmail.com	admin	password	Administrator
+2	fornavn	efternavn	mail@mail.com	staffuser	passw0rd	Staff
