@@ -36,7 +36,7 @@ public class DataController {
          			firstLine += "\t" + columns[i];
          		}
 
-         		PrintWriter printWriter = new PrintWriter(table);
+         		PrintWriter printWriter = new PrintWriter(table, "UTF-8");
          		printWriter.println(firstLine);
          		printWriter.flush();
          		printWriter.close();

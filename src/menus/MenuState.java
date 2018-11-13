@@ -5,6 +5,7 @@ public enum MenuState{
   SEARCH,
   MAINMENU,
   EVENTLOG,
+  EVENTTYPE,
   MANAGEMENT,
   EXIT
 }
