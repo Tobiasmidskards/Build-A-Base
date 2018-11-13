@@ -4,8 +4,8 @@ import java.util.Scanner;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
-import database.Movie;
-import database.Person;
+import database.TitleInfo;
+import database.PersonInfo;
 
 public class SearchController
 {
@@ -110,14 +110,14 @@ public class SearchController
 		return result;
 	}
 
-	public List<Person> searchPerson(String name) {
+	public List<PersonInfo> searchPerson(String name) {
 		// find person in namebasics.txt
 		// lookup titles from tconst.
 		// Find titles in titlebasics.txt
 		// show line[2] for primarytitle
 
 		String[] entry;
-		List<Person> persons = new ArrayList<>();
+		List<PersonInfo> persons = new ArrayList<>();
 		String[] movies;
 		name = name.toLowerCase();
 
@@ -161,8 +161,15 @@ public class SearchController
 						{
 							titles += "- " + getTitle(m) + "\n";
 						}
-
-						persons.add(new Person(entry[0], entry[1], entry[2], entry[3], entry[4], titles));
+                  
+                  		PersonInfo person = new PersonInfo();
+                  		person.setNconst(entry[0]);
+                  		person.setName(entry[1]);
+                  		person.setBirth(entry[2]);
+                  		person.setDeath(entry[3]);
+                  		person.setProfession(entry[4]);
+                  		person.setTitles(titles);
+						persons.add(person);
 					}
 				}
     		}
@@ -176,10 +183,10 @@ public class SearchController
 		return persons;
 	}
 
-	public List<Movie> searchTitle(String title, boolean useIndexTable)
+	public List<TitleInfo> searchTitle(String title, boolean useIndexTable)
 	{
 		String[] entry;
-		List<Movie> movies = new ArrayList<>();
+		List<TitleInfo> movies = new ArrayList<>();
 		boolean searchFinished = false;
 		title = title.toLowerCase();
 
@@ -235,7 +242,19 @@ public class SearchController
 
 									String[] ratingAndVote = getRatingAndVotes(entry[0]);
 
-									movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+									TitleInfo titleInfo = new TitleInfo();
+									titleInfo.setTconst(entry[0]);
+									titleInfo.setTitleType(entry[1]);
+									titleInfo.setPrimaryTitle(entry[2]);
+									titleInfo.setOriginalTitle(entry[3]);
+									titleInfo.setIsAdult(entry[4]);
+									titleInfo.setStartYear(entry[5]);
+									titleInfo.setRuntime(entry[7]);
+									titleInfo.setGenres(entry[8]);
+									titleInfo.setRating(ratingAndVote[0]);
+									titleInfo.setVotes(ratingAndVote[1]);
+                           
+									movies.add(titleInfo);
     							}
     						}
     					}
@@ -292,7 +311,20 @@ public class SearchController
 
 							String[] ratingAndVote = getRatingAndVotes(entry[0]);
 
-							movies.add(new Movie(entry[0], entry[1], entry[2], entry[3], entry[4], entry[5], entry[6], entry[7], entry[8], ratingAndVote[0], ratingAndVote[1]));
+							TitleInfo titleInfo = new TitleInfo();
+							titleInfo.setTconst(entry[0]);
+                      		titleInfo.setTitleType(entry[1]);
+                          	titleInfo.setPrimaryTitle(entry[2]);
+                          	titleInfo.setOriginalTitle(entry[3]);
+                         	titleInfo.setIsAdult(entry[4]);
+                           	titleInfo.setStartYear(entry[5]);
+                         	titleInfo.setEndYear(entry[6]);
+                         	titleInfo.setRuntime(entry[7]);
+                          	titleInfo.setGenres(entry[8]);
+                         	titleInfo.setRating(ratingAndVote[0]);
+							titleInfo.setVotes(ratingAndVote[1]);
+                           
+							movies.add(titleInfo);
         				}
 					}
 				}

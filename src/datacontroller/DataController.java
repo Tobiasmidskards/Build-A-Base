@@ -2,7 +2,6 @@ package datacontroller;
 
 import login.StaffUser;
 import eventlog.*;
-import database.Movie;
 
 import java.util.Scanner;
 import java.util.List;
@@ -70,10 +69,6 @@ public class DataController {
    }
 
 
-	/**
-	 *
-	 * @param index
-	 */
 	public void addRow(String[] columns, String tableName, boolean runCheck) {
 		if (staff.getId() > 0)
 		{
@@ -132,10 +127,6 @@ public class DataController {
 		}
 	}
 
-	/**
-	 *
-	 * @param index
-	 */
 	public String[] readTableColumns(String tableName) //reads first row to get structure of columns
 	{
 		String[] columns = null;
@@ -200,10 +191,6 @@ public class DataController {
     	return entry;
 	}
 
-	/**
-	 *
-	 * @param index
-	 */
 	public void updateRow(String primaryKey, String[] updatedRow, String tableName) {
 		if (staff.getId() > 0)
 		{
@@ -238,10 +225,6 @@ public class DataController {
 		}
 	}
 
-	/**
-	 *
-	 * @param index
-	 */
 	public void removeRow(String primaryKey, String tableName) {
 		try
 		{

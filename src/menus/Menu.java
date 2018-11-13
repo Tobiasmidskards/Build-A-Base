@@ -7,8 +7,8 @@ import java.io.*;
 import datacontroller.*;
 import eventlog.*;
 import search.SearchController;
-import database.Movie;
-import database.Person;
+import database.TitleInfo;
+import database.PersonInfo;
 
 public class Menu {
 
@@ -340,7 +340,7 @@ public class Menu {
 		input = scanner.nextLine();
 		System.out.println("\nReading from database.. This might take a while...");
 
-		List<Person> persons = searchController.searchPerson(input);
+		List<PersonInfo> persons = searchController.searchPerson(input);
 
 		System.out.println("\nYou have searched for: " + input);
 
@@ -352,7 +352,7 @@ public class Menu {
 		{
 			System.out.println(persons.size() + " person(s) found.");
 
-			for (Person p : persons)
+			for (PersonInfo p : persons)
 			{
 				System.out.printf("\nnconst:\t\t\t%s\nPerson:\t\t\t%s\nBirth:\t\t\t%s\nDeath:\t\t\t%s\nProfession:\t\t%s\n\nKnown for titles:\n%s\n",
 												 p.getNconst(), p.getName(), p.getBirth(), p.getDeath(), p.getProfession(), p.getTitles());
@@ -371,7 +371,7 @@ public class Menu {
 
 		System.out.println("\nReading from database.. This might take a while...");
 
-		List<Movie> movies = searchController.searchTitle(input, useIndexTable);
+		List<TitleInfo> movies = searchController.searchTitle(input, useIndexTable);
 
 		System.out.println("\nYou have searched for: " + input);
 
@@ -382,7 +382,7 @@ public class Menu {
 		{
 			System.out.println(movies.size() + " title(s) found.");
 
-			for (Movie m : movies)
+			for (TitleInfo m : movies)
 			{
 				System.out.printf("\ntconst:\t\t\t%s\nTitle type:\t\t\t%s\nPrimary Title:\t\t\t%s\nOriginal Title:\t\t\t%s\nIs adult:\t\t\t%s\nYear:\t\t\t\t%s\nRuntime:\t\t\t%s\nGenres:\t\t\t\t%s\nRating:\t\t\t\t%s\nVotes:\t\t\t\t%s\n",
 												m.getTconst(), m.getTitleType(), m.getPrimaryTitle(), m.getOriginalTitle(), m.getIsAdult(), m.getStartYear(), m.getRuntime(), m.getGenres(), m.getRating(), m.getVotes());
